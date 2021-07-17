@@ -45,3 +45,7 @@ body {
 .weapon {
   background-color: black;
 }
+
+.enemy {
+  background-color: coral;
+}

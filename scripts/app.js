@@ -2,6 +2,7 @@
 const grid = document.querySelector('.grid')
 // const weapon = document.querySelector('.weapon')
 const cells = []
+const enemyArray = []
 
 
 // Grid variables
@@ -14,36 +15,65 @@ const cellCount = width * width
 let timer = 0
 const playerClass = 'player'
 const weaponClass = 'weapon'
+const leadEnemy = 'leadEnemy'
+const enemy = 'enemy'
 let playerPosition = parseFloat(Math.floor(cellCount - (width / 2)))
+let enemyPosition = parseFloat(Math.floor(0 + (width / 2)))
 let weaponPosition = playerPosition
+let enemyCount = 1
+let newEnemy = parseFloat(Math.floor(enemyPosition - 1))
+
 
 
 // Functions
 
+//player functions
 function addPlayer() {
   cells[playerPosition].classList.add(playerClass)
-}
-
-function weaponClassNuke(){
-  cells.forEach(cell => cell.classList.remove(weaponClass))
 }
 
 function removePlayer() {
   cells[playerPosition].classList.remove(playerClass)
 }
 
+//weapon functions
+
+function weaponClassNuke() {
+  cells.forEach(cell => cell.classList.remove(weaponClass))
+}
+
 function addWeapon() {
   cells[weaponPosition].classList.add(weaponClass)
 }
 
+//enemy functions
+
+function addLeadEnemy() {
+  cells[enemyPosition].classList.add(leadEnemy)
+}
+
+function placeEnemies() {
+  while (enemyCount < 7) {
+    console.log(newEnemy)
+    cells[newEnemy].classList.add(enemy)
+    newEnemy--
+    enemyCount++
+  }
+}
+
+
+//general game functions
+
 function buildGrid() {
-  for (let i = 0 ; i < cellCount ; i++) {
+  for (let i = 0; i < cellCount; i++) {
     const newCell = document.createElement('div')
     newCell.textContent = i
     grid.appendChild(newCell)
     cells.push(newCell)
   }
   addPlayer()
+  addLeadEnemy()
+  placeEnemies()
 }
 
 
@@ -73,7 +103,7 @@ function xAxisMove(event) {
   addPlayer()
 }
 
-function endShot(){
+function endShot() {
   clearInterval(timer)
   weaponClassNuke()
 }
@@ -91,7 +121,7 @@ function fireWeapon(event) {
         } else {
           endShot()
         } break
-    } 
+    }
   }, 100
   )
 }
@@ -108,8 +138,8 @@ function fireWeapon(event) {
 //             addWeapon()
 //             weaponPosition -= width
 //             console.log('current', weaponPosition)
-            
-            
+
+
 //           } else {
 //             weaponClassNuke()
 //           }
@@ -119,7 +149,7 @@ function fireWeapon(event) {
 //       } break
 //   }
 // }    
-        
+
 
 
 
