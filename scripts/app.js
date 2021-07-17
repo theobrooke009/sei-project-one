@@ -1,6 +1,7 @@
 // Elements
 const grid = document.querySelector('.grid')
 // const weapon = document.querySelector('.weapon')
+const enemies = document.querySelectorAll('.enemy')
 const cells = []
 const enemyArray = []
 
@@ -18,10 +19,11 @@ const weaponClass = 'weapon'
 const leadEnemy = 'leadEnemy'
 const enemy = 'enemy'
 let playerPosition = parseFloat(Math.floor(cellCount - (width / 2)))
-let enemyPosition = parseFloat(Math.floor(0 + (width / 2)))
+let leadEnemyPosition = parseFloat(Math.floor(0 + (width / 2)))
 let weaponPosition = playerPosition
 let enemyCount = 1
-let newEnemy = parseFloat(Math.floor(enemyPosition - 1))
+let newEnemy = parseFloat(Math.floor(leadEnemyPosition - 1))
+let shotInProgress = true
 
 
 
@@ -49,18 +51,26 @@ function addWeapon() {
 //enemy functions
 
 function addLeadEnemy() {
-  cells[enemyPosition].classList.add(leadEnemy)
+  cells[leadEnemyPosition].classList.add(leadEnemy)
 }
 
 function placeEnemies() {
   while (enemyCount < 7) {
-    console.log(newEnemy)
     cells[newEnemy].classList.add(enemy)
     newEnemy--
     enemyCount++
   }
 }
 
+function moveEnemies() {
+  const x = leadEnemyPosition % width
+  const y = Math.floor(leadEnemyPosition / width)
+  while (y > 0 && leadEnemyPosition >= cellCount){
+    leadEnemyPosition++
+    console.log(leadEnemyPosition)
+  }
+}
+moveEnemies() 
 
 //general game functions
 
@@ -81,6 +91,7 @@ buildGrid()
 
 
 function xAxisMove(event) {
+  shotInProgress = true
   const x = playerPosition % width
 
   removePlayer()
@@ -90,16 +101,18 @@ function xAxisMove(event) {
       if (x < width - 1) {
         playerPosition++
         weaponPosition = playerPosition
+        shotInProgress = false
       }
       break
     case 37:
       if (x > 0) {
         playerPosition--
         weaponPosition = playerPosition
+        shotInProgress = false
       }
       break
   }
-
+  
   addPlayer()
 }
 
@@ -111,10 +124,11 @@ function endShot() {
 
 function fireWeapon(event) {
   timer = setInterval(() => {
+    const x = playerPosition % width
     const y = Math.floor(playerPosition / width)
     switch (event.keyCode) {
       case 69:
-        if (y > 0 && weaponPosition >= width) {
+        if (y > 0 && weaponPosition >= width && shotInProgress === true) {
           weaponClassNuke()
           weaponPosition -= width
           addWeapon(weaponPosition)
