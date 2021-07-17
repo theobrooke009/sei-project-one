@@ -4,6 +4,7 @@ const grid = document.querySelector('.grid')
 // const enemies = document.querySelectorAll('.enemy')
 const start = document.querySelector('.start')
 const cells = []
+const enemyArray = [0, 1, 2, 3, 4, 5, 6]
 
 
 // Grid variables
@@ -19,7 +20,7 @@ const weaponClass = 'weapon'
 const leadEnemy = 'leadEnemy'
 const enemy = 'enemy'
 let playerPosition = parseFloat(Math.floor(cellCount - (width / 2)))
-let leadEnemyPosition = parseFloat(Math.floor(0 + (width / 2)))
+let leadEnemyPosition = parseFloat(enemyArray[6])
 let weaponPosition = playerPosition
 let enemyCount = 1
 let newEnemy = parseFloat(Math.floor(leadEnemyPosition - 1))
@@ -58,6 +59,14 @@ function removeLeadEnemy() {
   cells[leadEnemyPosition].classList.remove(leadEnemy)
 }
 
+
+function addEnemy() {
+  cells[leadEnemyPosition].classList.add(enemy)
+}
+function removeEnemy() {
+  cells[leadEnemyPosition].classList.remove(enemy)
+}
+
 function placeEnemies() {
   while (enemyCount < 7) {
     cells[newEnemy].classList.add(enemy)
@@ -67,19 +76,28 @@ function placeEnemies() {
 }
 
 function moveEnemies() {
+  
   timer = setInterval(() => {
     const x = leadEnemyPosition % width
     const y = Math.floor(leadEnemyPosition / width)
-
-    if (leadEnemyPosition <= cellCount){
+    let row = 1
+    if (leadEnemyPosition < (width - 1) * row){
       removeLeadEnemy()
       leadEnemyPosition++
       addLeadEnemy()
-      console.log(leadEnemyPosition)
-    } else {
-      console.log(leadEnemyPosition)
+      removeEnemy()
+      newEnemy++
+      addEnemy()
+      row ++
     }
-  }, 2000
+      else if (leadEnemyPosition === (width - 1) * row) {
+      removeLeadEnemy()
+      leadEnemyPosition += width
+      addLeadEnemy()
+    } else {
+      return
+    }
+  }, 500
   )
 }
 
@@ -96,9 +114,9 @@ function buildGrid() {
   addPlayer()
   addLeadEnemy()
   placeEnemies()
-  moveEnemies()
-  xAxisMove() 
-  fireWeapon()
+//   moveEnemies()
+//   xAxisMove() 
+//   fireWeapon()
 }
 
 
@@ -162,29 +180,6 @@ function fireWeapon(event) {
   }, 100
   )
 }
-// function fireWeapon(event) {
-//   const y = Math.floor(playerPosition / width)
-//   switch (event.keyCode) {
-//     case 69:
-//       if (y > 0) {
-//         const intervalId = setInterval(() => {
-//           while(weaponPosition >= width) {
-//           if (weaponPosition >= width) {
-//             weaponClassNuke()
-//             addWeapon()
-//             weaponPosition -= width
-//             console.log('current', weaponPosition)
-
-
-//           } else {
-//             weaponClassNuke()
-//           }
-//         }
-//           clearInterval(intervalId)
-//         }, 300)
-//       } break
-//   }
-// }    
 
 
 
@@ -194,10 +189,11 @@ function fireWeapon(event) {
 
 
 
-addPlayer()
+
+// addPlayer()
 // fireWeapon()
 // Events
 
 window.addEventListener('keyup', xAxisMove)
 window.addEventListener('keyup', fireWeapon)
-start.addEventListener('click', moveEnemies())
+start.addEventListener('click', moveEnemies)
