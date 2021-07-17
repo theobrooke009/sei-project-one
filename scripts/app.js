@@ -71,17 +71,18 @@ function moveEnemies() {
     const x = leadEnemyPosition % width
     const y = Math.floor(leadEnemyPosition / width)
 
-    while (y > 0 && leadEnemyPosition >= cellCount){
+    if (leadEnemyPosition <= cellCount){
       removeLeadEnemy()
       leadEnemyPosition++
-      console.log(leadEnemyPosition)
       addLeadEnemy()
+      console.log(leadEnemyPosition)
+    } else {
+      console.log(leadEnemyPosition)
     }
-  }, 500
+  }, 2000
   )
 }
 
-moveEnemies() 
 
 //general game functions
 
@@ -95,7 +96,9 @@ function buildGrid() {
   addPlayer()
   addLeadEnemy()
   placeEnemies()
-  moveEnemies() 
+  moveEnemies()
+  xAxisMove() 
+  fireWeapon()
 }
 
 
@@ -109,19 +112,16 @@ function xAxisMove(event) {
 
   switch (event.keyCode) {
     case 39:
-      shotInProgress = true
       if (x < width - 1) {
         playerPosition++
         weaponPosition = playerPosition
-        shotInProgress = false
       }
       break
     case 37:
-      shotInProgress = true
       if (x > 0) {
         playerPosition--
         weaponPosition = playerPosition
-        shotInProgress = false
+      
       }
       break
   }
@@ -132,36 +132,36 @@ function xAxisMove(event) {
 function endShot() {
   clearInterval(timer)
   weaponClassNuke()
+  shotInProgress = false
 }
 
 
 function fireWeapon(event) {
-  if (shotInProgress) return
-  shotInProgress = true
-
   timer = setInterval(() => {
-    const x = weaponPosition % width
-    const y = Math.floor(weaponPosition / width)
+    const x = playerPosition % width
+    const y = Math.floor(playerPosition / width)
     switch (event.keyCode) {
 
       case 69:
+
         if (y > 0 && weaponPosition >= width) {
-          shotInProgress = true
           weaponClassNuke()
           weaponPosition -= width
           addWeapon(weaponPosition)
           console.log(weaponPosition)
         } else {
-          shotInProgress = false
           endShot()
         }
+
+
+        console.log(shotInProgress)
         break
-    }
+
+        
+    } 
   }, 100
   )
-  shotInProgress = false
 }
-
 // function fireWeapon(event) {
 //   const y = Math.floor(playerPosition / width)
 //   switch (event.keyCode) {
