@@ -19,11 +19,17 @@ const playerClass = 'player'
 const weaponClass = 'weapon'
 const leadEnemy = 'leadEnemy'
 const enemy = 'enemy'
+
 let playerPosition = parseFloat(Math.floor(cellCount - (width / 2)))
-let leadEnemyPosition = parseFloat(enemyArray[6])
+let leadEnemyPosition = enemyArray[6]
 let weaponPosition = playerPosition
-let enemyCount = 1
-let newEnemy = parseFloat(Math.floor(leadEnemyPosition - 1))
+// let enemyCount = 1
+let enemyTwo = enemyArray[5]
+let enemyThree = enemyArray[4]
+let enemyFour = enemyArray[3]
+let enemyFive = enemyArray[2]
+let enemySix = enemyArray[1]
+let enemySeven = enemyArray[0]
 let shotInProgress = false
 
 
@@ -53,27 +59,34 @@ function addWeapon() {
 
 function addLeadEnemy() {
   cells[leadEnemyPosition].classList.add(leadEnemy)
+  cells[enemyTwo].classList.add(enemy)
+  cells[enemyThree].classList.add(enemy)
+  cells[enemyFour].classList.add(enemy)
+  cells[enemyFive].classList.add(enemy)
+  cells[enemySix].classList.add(enemy)
+  cells[enemySeven].classList.add(enemy)
 }
 
 function removeLeadEnemy() {
   cells[leadEnemyPosition].classList.remove(leadEnemy)
+  cells[enemyTwo].classList.remove(enemy)
+  cells[enemyThree].classList.remove(enemy)
+  cells[enemyFour].classList.remove(enemy)
+  cells[enemyFive].classList.remove(enemy)
+  cells[enemySix].classList.remove(enemy)
+  cells[enemySeven].classList.remove(enemy)
 }
 
 
-function addEnemy() {
-  cells[leadEnemyPosition].classList.add(enemy)
-}
-function removeEnemy() {
-  cells[leadEnemyPosition].classList.remove(enemy)
-}
+// function placeEnemies() {
+//   while (enemyCount < 7) {
+//     cells[newEnemy].classList.add(enemy)
+//     newEnemy--
+//     enemyCount++
+//   }
+// }
 
-function placeEnemies() {
-  while (enemyCount < 7) {
-    cells[newEnemy].classList.add(enemy)
-    newEnemy--
-    enemyCount++
-  }
-}
+
 
 function moveEnemies() {
   timer = setInterval(() => {
@@ -85,7 +98,15 @@ function moveEnemies() {
 
         removeLeadEnemy()
         leadEnemyPosition++
+        enemyTwo++
+        enemyThree++
+        enemyFour++
+        enemyFive++
+        enemySix++
+        enemySeven++
         addLeadEnemy()
+        
+       
 
         console.log(leadEnemyPosition)
 
@@ -112,7 +133,7 @@ function buildGrid() {
   }
   addPlayer()
   addLeadEnemy()
-  placeEnemies()
+  // placeEnemies()
 //   moveEnemies()
 //   xAxisMove() 
 //   fireWeapon()
