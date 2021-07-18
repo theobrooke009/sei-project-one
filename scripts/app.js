@@ -78,15 +78,6 @@ function removeLeadEnemy() {
 }
 
 
-// function placeEnemies() {
-//   while (enemyCount < 7) {
-//     cells[newEnemy].classList.add(enemy)
-//     newEnemy--
-//     enemyCount++
-//   }
-// }
-
-
 
 function moveEnemies() {
   timer = setInterval(() => {
@@ -105,10 +96,6 @@ function moveEnemies() {
         enemySix++
         enemySeven++
         addLeadEnemy()
-        
-       
-
-        console.log(leadEnemyPosition)
 
       } else {
         removeLeadEnemy()
@@ -133,10 +120,6 @@ function buildGrid() {
   }
   addPlayer()
   addLeadEnemy()
-  // placeEnemies()
-//   moveEnemies()
-//   xAxisMove() 
-//   fireWeapon()
 }
 
 
@@ -201,18 +184,6 @@ function fireWeapon(event) {
   )
 }
 
-
-
-
-
-
-
-
-
-
-// addPlayer()
-// fireWeapon()
-// Events
 
 window.addEventListener('keyup', xAxisMove)
 window.addEventListener('keyup', fireWeapon)
