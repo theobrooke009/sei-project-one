@@ -4,7 +4,7 @@ const grid = document.querySelector('.grid')
 // const enemies = document.querySelectorAll('.enemy')
 const start = document.querySelector('.start')
 const cells = []
-const enemyArray = [0, 1, 2, 3, 4, 5, 6]
+let enemyArray = [0, 1, 2, 3, 4, 5, 6]
 
 
 // Grid variables
@@ -21,15 +21,14 @@ const leadEnemy = 'leadEnemy'
 const enemy = 'enemy'
 
 let playerPosition = parseFloat(Math.floor(cellCount - (width / 2)))
-let leadEnemyPosition = enemyArray[6]
 let weaponPosition = playerPosition
-// let enemyCount = 1
-let enemyTwo = enemyArray[5]
-let enemyThree = enemyArray[4]
-let enemyFour = enemyArray[3]
-let enemyFive = enemyArray[2]
-let enemySix = enemyArray[1]
-let enemySeven = enemyArray[0]
+let leadEnemyPosition = enemyArray[6]
+let enemyTwo = enemyArray[(leadEnemyPosition - 1)]
+let enemyThree = enemyArray[(leadEnemyPosition - 2)]
+let enemyFour = enemyArray[(leadEnemyPosition - 3)]
+let enemyFive = enemyArray[(leadEnemyPosition - 4)]
+let enemySix = enemyArray[(leadEnemyPosition - 5)]
+let enemySeven = enemyArray[(leadEnemyPosition - 6)]
 let shotInProgress = false
 
 
@@ -57,8 +56,20 @@ function addWeapon() {
 
 //enemy functions
 
+
+// this changes the array just fine but I cant work out how to access the elements and apply them to enemy positions
+// function mapArray() {
+//   if (leadEnemyPosition < cellCount) {
+//     enemyArray = enemyArray.map((enemy) => {
+//       return enemy + 1 
+//     })
+ 
+//   }
+// }
+
 function addLeadEnemy() {
   cells[leadEnemyPosition].classList.add(leadEnemy)
+  
   cells[enemyTwo].classList.add(enemy)
   cells[enemyThree].classList.add(enemy)
   cells[enemyFour].classList.add(enemy)
@@ -83,7 +94,7 @@ function moveEnemies() {
   timer = setInterval(() => {
     const x = leadEnemyPosition % width
     const y = Math.floor(leadEnemyPosition / width)
-    if(y >= 0) {
+    if (y >= 0) {
 
       if (leadEnemyPosition < cellCount - width){
 
@@ -103,7 +114,7 @@ function moveEnemies() {
       }
    
     }
-  }, 50
+  }, 500
   )
 
 }
@@ -181,10 +192,25 @@ function fireWeapon(event) {
         
     } 
   }, 100
+  ) 
+}
+
+function enemyBomb() {
+  timer = setInterval(() => {
+    if (leadEnemyPosition < cellCount - (width * 2)) {
+      const rNJesus = Math.floor((Math.random() * cellCount) + 1)
+      if (cells[rNJesus].classList.contains(enemy)){
+        console.log('fire bomb')
+      }
+    }
+  }, 1000
   )
 }
+
+
 
 
 window.addEventListener('keyup', xAxisMove)
 window.addEventListener('keyup', fireWeapon)
 start.addEventListener('click', moveEnemies)
+start.addEventListener('click', enemyBomb)
