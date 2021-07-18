@@ -19,6 +19,7 @@ const playerClass = 'player'
 const weaponClass = 'weapon'
 const leadEnemy = 'leadEnemy'
 const enemy = 'enemy'
+const missileClass = 'missile'
 
 let playerPosition = parseFloat(Math.floor(cellCount - (width / 2)))
 let weaponPosition = playerPosition
@@ -52,6 +53,14 @@ function weaponClassNuke() {
 
 function addWeapon() {
   cells[weaponPosition].classList.add(weaponClass)
+}
+
+function missleClassAdd() {
+  cells.forEach(cell => cell.classList.add(missileClass))
+}
+
+function missleClassRemove() {
+  cells.forEach(cell => cell.classList.remove(missileClass))
 }
 
 //enemy functions
@@ -198,8 +207,11 @@ function fireWeapon(event) {
 function enemyBomb() {
   timer = setInterval(() => {
     if (leadEnemyPosition < cellCount - (width * 2)) {
-      const rNJesus = Math.floor((Math.random() * cellCount) + 1)
+      let rNJesus = Math.floor((Math.random() * cellCount) + 1)
       if (cells[rNJesus].classList.contains(enemy)){
+        missleClassRemove()
+        rNJesus += width
+        missleClassAdd()
         console.log('fire bomb')
       }
     }

@@ -49,3 +49,7 @@ body {
 .enemy {
   background-color: coral;
 }
+
+.missile {
+  background-color: crimson;
+}
