@@ -76,29 +76,28 @@ function placeEnemies() {
 }
 
 function moveEnemies() {
-  
   timer = setInterval(() => {
     const x = leadEnemyPosition % width
     const y = Math.floor(leadEnemyPosition / width)
-    let row = 1
-    if (leadEnemyPosition < (width - 1) * row){
-      removeLeadEnemy()
-      leadEnemyPosition++
-      addLeadEnemy()
-      removeEnemy()
-      newEnemy++
-      addEnemy()
-      row ++
+    if(y >= 0) {
+
+      if (leadEnemyPosition < cellCount - width){
+
+        removeLeadEnemy()
+        leadEnemyPosition++
+        addLeadEnemy()
+
+        console.log(leadEnemyPosition)
+
+      } else {
+        removeLeadEnemy()
+        return
+      }
+   
     }
-      else if (leadEnemyPosition === (width - 1) * row) {
-      removeLeadEnemy()
-      leadEnemyPosition += width
-      addLeadEnemy()
-    } else {
-      return
-    }
-  }, 500
+  }, 50
   )
+
 }
 
 
