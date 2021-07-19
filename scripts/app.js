@@ -131,8 +131,6 @@ function removeEnemyClass() {
 }
 // this removes the enemy class
 
-
-
 function moveEnemiesRight() {
   timer = setInterval(() => {
     if (enemyOne <= totalNumberOfGridCells - gridWidth) {
@@ -179,4 +177,44 @@ window.addEventListener('keyup', movePlayer)
 
 mainFunction()
 addEnemyClass()
+
+function endShot() {
+  clearInterval(timer)
+  weaponClassNuke()
+  
+}
+
+function fireWeapon(event) {
+  let weaponPosition = playerPosition + width
+
+  function addWeapon() {
+    cells[weaponPosition].classList.add(weaponClass)
+  }
+  
+  timer = setInterval(() => {
+  
+    const y = Math.floor(playerPosition / width)
+  
+    switch (event.keyCode) {
+      case 69:
+        if (weaponPosition >= y + 1) {
+            
+          weaponClassNuke()
+          weaponPosition -= width
+          addWeapon(weaponPosition)
+          console.log(weaponPosition)
+            
+        } else {
+          clearInterval(timer)
+          weaponClassNuke()
+          return
+        }
+        break      
+    } 
+  }) 
+}
+
+function weaponClassNuke() {
+  cells.forEach(cell => cell.classList.remove(weaponClass))
+}
 
