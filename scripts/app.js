@@ -1,7 +1,7 @@
 // Elements
 const grid = document.querySelector('.grid')
 // const weapon = document.querySelector('.weapon')
-// const enemies = document.querySelectorAll('.enemy')
+const enemies = document.querySelectorAll('.enemy')
 const start = document.querySelector('.start')
 const cells = []
 let enemyArray = [0, 1, 2, 3, 4, 5, 6]
@@ -18,7 +18,7 @@ let timer = 0
 const playerClass = 'player'
 const weaponClass = 'weapon'
 const leadEnemy = 'leadEnemy'
-const enemy = 'enemy'
+let enemy = 'enemy'
 const missileClass = 'missile'
 
 let playerPosition = parseFloat(Math.floor(cellCount - (width / 2)))
@@ -69,89 +69,161 @@ function missleClassRemove() {
 
 // this changes the array just fine but I cant work out how to access the elements and apply them to enemy positions
 
-function mapArray() {
-  if (leadEnemyPosition < cellCount) {
-    enemyArray = enemyArray.map((enemy) => {
-      enemy++ 
-      console.log(enemy)
-    })
- 
-  }
-}
+
 
 function addLeadEnemy() {
-  cells[leadEnemyPosition].classList.add(leadEnemy)
-  
-  cells[enemyTwo].classList.add(enemy)
-  cells[enemyThree].classList.add(enemy)
-  cells[enemyFour].classList.add(enemy)
-  cells[enemyFive].classList.add(enemy)
-  cells[enemySix].classList.add(enemy)
-  cells[enemySeven].classList.add(enemy)
+  cells[leadEnemyPosition].classList.add('leadEnemy')  
+  cells[enemyTwo].classList.add('enemy')
+  cells[enemyThree].classList.add('enemy')
+  cells[enemyFour].classList.add('enemy')
+  cells[enemyFive].classList.add('enemy')
+  cells[enemySix].classList.add('enemy')
+  cells[enemySeven].classList.add('enemy')
 }
 
 function removeLeadEnemy() {
-  cells[leadEnemyPosition].classList.remove(leadEnemy)
-  cells[enemyTwo].classList.remove(enemy)
-  cells[enemyThree].classList.remove(enemy)
-  cells[enemyFour].classList.remove(enemy)
-  cells[enemyFive].classList.remove(enemy)
-  cells[enemySix].classList.remove(enemy)
-  cells[enemySeven].classList.remove(enemy)
+  cells[leadEnemyPosition].classList.remove('leadEnemy')
+  cells[enemyTwo].classList.remove('enemy')
+  cells[enemyThree].classList.remove('enemy')
+  cells[enemyFour].classList.remove('enemy')
+  cells[enemyFive].classList.remove('enemy')
+  cells[enemySix].classList.remove('enemy')
+  cells[enemySeven].classList.remove('enemy')
 }
 
 
 
-function moveEnemies() {
-  timer = setInterval(() => {
-    const x = leadEnemyPosition % width
-    const y = Math.floor(leadEnemyPosition / width)
-    if (y >= 0) {
-
-      if (x < width - 1 && leadEnemyPosition < cellCount - width){
-        removeLeadEnemy()
+  function moveEnemies() {
+    timer = setInterval(() => {
+  
+          removeLeadEnemy()
+          leadEnemyPosition++
+          enemyTwo++
+          enemyThree++
+          enemyFour++
+          enemyFive++
+          enemySix++
+          enemySeven++
+          addLeadEnemy()
+  
+  
+  
+          console.log(leadEnemyPosition)
+    }, 500
+    )
+  }
+  // const x = leadEnemyPosition % width
+  // let row = 1
+  // let isPathClear = true
+  
+  // setInterval(() => {
+  //   // function moveRight() {
+    
+  //   while (isPathClear) {
+      
+  //     console.log(leadEnemyPosition)
+  //     removeLeadEnemy()
+    
+  
+  //     enemyArray.map(mapEnemy => {
+  //       mapEnemy = mapEnemy + 1
         
-        addLeadEnemy()
+  //       console.log(mapEnemy)
+  //       cells[mapEnemy].classList.add('enemy')
+  //       cells[mapEnemy].classList.add('leadEnemy')
+  //     })
+  //     console.log(enemyArray)
+  //     if (x >= (row * width) - 1) {
         
-        console.log(row)
+  //       isPathClear = false
+  //       return
+  //     }
+  //     return
+  //   } 
+        
+  //   // }
+  
 
-      } else if (width !== 0 && x === width - 1){
-        row += 1
-        removeLeadEnemy()
-        leadEnemyPosition += width
-        enemyTwo += width
-        enemyThree += width
-        enemyFour += width
-        enemyFive += width
-        enemySix += width
-        enemySeven += width
-        leadEnemyPosition--
-        width = 0
-        addLeadEnemy()
-        console.log(row)
+
+  // }, 500) 
+  //  function moveRight() {
+    
+  //   while (isPathClear) {
+  //     console.log('here')
+  //     removeLeadEnemy()
+  //     console.log('here')
+  //     enemyArray.map(mapEnemy => {
+  //       console.log('here')
+  //       mapEnemy += 1
+  //       console.log(mapEnemy)
+  //       cells[mapEnemy].classList.add(enemy)
+  //       cells[mapEnemy].classList.add(leadEnemy)
+  //     })
+  //     if (x >= (row * width) - 1) {
+  //       console.log('here')
+  //       isPathClear = false
+  //       return
+  //     }
+  //     return
+  //   } 
+      
+  // }
+
+  // moveRight()
+    
+
+  // }
+  // const x = leadEnemyPosition % width
+  // const y = Math.floor(leadEnemyPosition / width)
+  // if (y >= 0) {
+
+  //   if (leadEnemyPosition < cellCount - width){
+  //     removeLeadEnemy()
+  //     leadEnemyPosition++
+  //     enemyTwo++
+  //     enemyThree++
+  //     enemyFour++
+  //     enemyFive++
+  //     enemySix++
+  //     enemySeven++
+  //     addLeadEnemy()
+      
+
+      // } else if (width !== 0 && x === width - 1){
+      //   row += 1
+      //   removeLeadEnemy()
+      //   leadEnemyPosition += width
+      //   enemyTwo += width
+      //   enemyThree += width
+      //   enemyFour += width
+      //   enemyFive += width
+      //   enemySix += width
+      //   enemySeven += width
+      //   leadEnemyPosition--
+      //   width = 0
+      //   addLeadEnemy()
+      //   console.log(row)
         
 
-      } else if (width === 0 && x > 0 && leadEnemyPosition < cellCount - width) {
-        removeLeadEnemy()
-        leadEnemyPosition--
-        enemyTwo--
-        enemyThree--
-        enemyFour--
-        enemyFive--
-        enemySix--
-        enemySeven--
-        addLeadEnemy()
-        width = 13
-      }
+      // } else if (width === 0 && x > 0 && leadEnemyPosition < cellCount - width) {
+      //   removeLeadEnemy()
+      //   leadEnemyPosition--
+      //   enemyTwo--
+      //   enemyThree--
+      //   enemyFour--
+      //   enemyFive--
+      //   enemySix--
+      //   enemySeven--
+      //   addLeadEnemy()
+      //   width = 13
+      // }
    
     }
-  }, 500
-  )
-
+  }
 }
 
-
 //general game functions
+
 
 function buildGrid() {
   for (let i = 0; i < cellCount; i++) {
@@ -197,39 +269,35 @@ function endShot() {
 
 
 function fireWeapon(event) {
-  let shotInProgress = false
   let weaponPosition = playerPosition + width
 
   function addWeapon() {
     cells[weaponPosition].classList.add(weaponClass)
   }
-
+  
   timer = setInterval(() => {
   
     const y = Math.floor(playerPosition / width)
   
     switch (event.keyCode) {
       case 69:
-        
-        if (y > 0 && shotInProgress === false ) {
+        if (weaponPosition >= y + 1) {
+            
           weaponClassNuke()
           weaponPosition -= width
           addWeapon(weaponPosition)
-          
+          console.log(weaponPosition)
+            
         } else {
-          endShot()
-          shotInProgress = true
-        
+          clearInterval(timer)
+          weaponClassNuke()
           return
         }
-       
-        break
-        
+        break      
     } 
-  }, 100
-  ) 
-  
+  }) 
 }
+
 
 function enemyBomb() {
   timer = setInterval(() => {
