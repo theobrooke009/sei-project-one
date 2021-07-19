@@ -1,4 +1,4 @@
-// Elements
+// DOM Elements
 const grid = document.querySelector('.grid')
 // Grab the grid in the DOM
 
@@ -7,9 +7,6 @@ const enemies = document.querySelectorAll('.enemy')
 
 const start = document.querySelector('.start')
 // Grab the HTML start button class in the dom
-
-
-
 
 // Arrays
 const cells = []
@@ -35,6 +32,22 @@ function buildGrid() {
 
 buildGrid()
 // Function call to build the grid
+
+// VARIABLES
+
+const enemyArrayLength = enemyArray.length
+// length of the enemy array, stored to place first enemy
+
+let timer = 0
+// call this to work setIntervals
+
+const playerClass = 'player'
+const weaponClass = 'weapon'
+const enemy = 'enemy'
+const enemyBomb = 'enemyBomb'
+// CSS classes stored as variables for ease of use
+
+const firstEnemy = enemyArrayLength
 
 // Functions
 
