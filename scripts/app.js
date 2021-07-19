@@ -30,7 +30,7 @@ function buildGrid() {
 }
 // this creates divs and pushes them into the cells array, thus creating the board. Perameters are defined in CSS.
 
-buildGrid()
+
 // Function call to build the grid
 
 // VARIABLES
@@ -54,11 +54,16 @@ const firstEnemy = gridWidth - (gridWidth - totalEnemies)
 // calculates position of first enemy
 
 let placeNewEnemy = firstEnemy - 1
-console.log('placenew', placeNewEnemy)
 // used in the placeEnemy function to determine the new enemy position based on the length of the enemy array
+
+let playerPosition = parseFloat(Math.floor(totalNumberOfGridCells - ( gridWidth / 2)))
 
 
 // Functions
+
+function placePlayer() {
+  cells[playerPosition].classList.add(playerClass)
+}
 
 function placeEnemies() {
   enemyArray.push(firstEnemy)
@@ -74,9 +79,6 @@ function placeEnemies() {
 
 // this places enemies into the enemy array depending on the total enemies count. For some reason it comes out backward so i reversed it.
 
-placeEnemies()
-
-
 // Player Functions
 
 // Weapon functions
@@ -84,3 +86,14 @@ placeEnemies()
 // Enemy Functions
 
 // Event Listeners
+
+start.addEventListener('click', mainFunction())
+
+// MAIN FUNCTION
+
+function mainFunction(){
+  buildGrid()
+  placeEnemies()
+  placePlayer()
+}
+
