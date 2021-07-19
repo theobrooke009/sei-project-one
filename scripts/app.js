@@ -1,3 +1,13 @@
+// MAIN FUNCTION
+
+function mainFunction(){
+  buildGrid()
+  placeEnemies()
+  placePlayer()
+}
+
+
+
 // DOM Elements
 const grid = document.querySelector('.grid')
 // Grab the grid in the DOM
@@ -47,7 +57,7 @@ const enemy = 'enemy'
 const enemyBomb = 'enemyBomb'
 // CSS classes stored as variables for ease of use
 
-const firstEnemy = gridWidth - (gridWidth - totalEnemies)
+let firstEnemy = gridWidth - (gridWidth - totalEnemies)
 // calculates position of first enemy
 
 let placeNewEnemy = firstEnemy - 1
@@ -66,6 +76,8 @@ function removePlayer() {
   cells[playerPosition].classList.remove(playerClass)
 }
 // this removes the player from the player position
+
+// Player Functions
 
 function movePlayer(event) {
   const x = playerPosition % gridWidth
@@ -86,37 +98,49 @@ function movePlayer(event) {
   }
   placePlayer()
 }
+// this is how the player moves left and right
+
+// Weapon functions
+
+// Enemy Functions
 
 function placeEnemies() {
   enemyArray.push(firstEnemy)
   while (currentTotalEnemies < totalEnemies){
+    console.log('place new', placeNewEnemy)
     enemyArray.push(placeNewEnemy)
     cells[placeNewEnemy].classList.add(enemy)
     currentTotalEnemies++
     placeNewEnemy--
-    console.log(currentTotalEnemies)
+    
   }
   enemyArray.reverse()
 }
 
 // this places enemies into the enemy array depending on the total enemies count. For some reason it comes out backward so i reversed it.
 
-// Player Functions
+function moveEnemiesRight(){
+  timer = setInterval(() => {
+    if (firstEnemy <= totalNumberOfGridCells - gridWidth) {
+      cells[firstEnemy].classList.remove(enemy)
+      firstEnemy++
+      cells[firstEnemy].classList.add(enemy)
+      console.log(firstEnemy)
+    }
+  }, 100)
+}
 
-// Weapon functions
 
-// Enemy Functions
+console.log('en arr2', enemyArray)
+
+
+// moveEnemiesRight()
 
 // Event Listeners
 
-start.addEventListener('click', mainFunction())
+
+start.addEventListener('click', moveEnemiesRight)
 window.addEventListener('keyup', movePlayer)
 
-// MAIN FUNCTION
 
-function mainFunction(){
-  buildGrid()
-  placeEnemies()
-  placePlayer()
-}
-
+mainFunction()
