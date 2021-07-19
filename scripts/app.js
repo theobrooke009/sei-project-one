@@ -12,7 +12,7 @@ const start = document.querySelector('.start')
 const cells = []
 // the blank array which the grid divs are pushed into
 
-let enemyArray = [0, 1, 2, 3, 4, 5, 6]
+let enemyArray = []
 // this represents the starting position of every enemy on the board
 
 // Grid & grid variables
@@ -35,11 +35,14 @@ buildGrid()
 
 // VARIABLES
 
-const enemyArrayLength = enemyArray.length
-// length of the enemy array, stored to place first enemy
-
 let timer = 0
 // call this to work setIntervals
+
+const totalEnemies = 8
+// used in the createEnemies function to place enemies
+
+let currentTotalEnemies = 0
+// used when placing enemies as check against totalEnemies
 
 const playerClass = 'player'
 const weaponClass = 'weapon'
@@ -47,9 +50,32 @@ const enemy = 'enemy'
 const enemyBomb = 'enemyBomb'
 // CSS classes stored as variables for ease of use
 
-const firstEnemy = enemyArrayLength
+const firstEnemy = gridWidth - (gridWidth - totalEnemies)
+// calculates position of first enemy
+
+let placeNewEnemy = firstEnemy - 1
+console.log('placenew', placeNewEnemy)
+// used in the placeEnemy function to determine the new enemy position based on the length of the enemy array
+
 
 // Functions
+
+function placeEnemies() {
+  enemyArray.push(firstEnemy)
+  while (currentTotalEnemies < totalEnemies){
+    enemyArray.push(placeNewEnemy)
+    cells[placeNewEnemy].classList.add(enemy)
+    currentTotalEnemies++
+    placeNewEnemy--
+    console.log(currentTotalEnemies)
+  }
+  enemyArray.reverse()
+}
+
+// this places enemies into the enemy array depending on the total enemies count. For some reason it comes out backward so i reversed it.
+
+placeEnemies()
+
 
 // Player Functions
 
