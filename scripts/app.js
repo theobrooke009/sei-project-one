@@ -30,9 +30,6 @@ function buildGrid() {
 }
 // this creates divs and pushes them into the cells array, thus creating the board. Perameters are defined in CSS.
 
-
-// Function call to build the grid
-
 // VARIABLES
 
 let timer = 0
@@ -58,11 +55,36 @@ let placeNewEnemy = firstEnemy - 1
 
 let playerPosition = parseFloat(Math.floor(totalNumberOfGridCells - ( gridWidth / 2)))
 
-
 // Functions
 
 function placePlayer() {
   cells[playerPosition].classList.add(playerClass)
+}
+// this places the player class at the player position
+
+function removePlayer() {
+  cells[playerPosition].classList.remove(playerClass)
+}
+// this removes the player from the player position
+
+function movePlayer(event) {
+  const x = playerPosition % gridWidth
+
+  removePlayer()
+
+  switch (event.keyCode) {
+    case 39:
+      if (x < gridWidth - 1) {
+        playerPosition++
+      }
+      break
+    case 37:
+      if (x > 0) {
+        playerPosition--
+      }
+      break
+  }
+  placePlayer()
 }
 
 function placeEnemies() {
@@ -88,6 +110,7 @@ function placeEnemies() {
 // Event Listeners
 
 start.addEventListener('click', mainFunction())
+window.addEventListener('keyup', movePlayer)
 
 // MAIN FUNCTION
 
