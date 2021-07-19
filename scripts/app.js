@@ -2,7 +2,6 @@
 
 function mainFunction(){
   buildGrid()
-  placeEnemies()
   placePlayer()
 }
 
@@ -22,7 +21,7 @@ const start = document.querySelector('.start')
 const cells = []
 // the blank array which the grid divs are pushed into
 
-let enemyArray = []
+let enemyArray = [0, 1, 2, 3, 4, 5, 6]
 // this represents the starting position of every enemy on the board
 
 // Grid & grid variables
@@ -45,11 +44,6 @@ function buildGrid() {
 let timer = 0
 // call this to work setIntervals
 
-const totalEnemies = 8
-// used in the createEnemies function to place enemies
-
-let currentTotalEnemies = 0
-// used when placing enemies as check against totalEnemies
 
 const playerClass = 'player'
 const weaponClass = 'weapon'
@@ -57,11 +51,15 @@ const enemy = 'enemy'
 const enemyBomb = 'enemyBomb'
 // CSS classes stored as variables for ease of use
 
-let firstEnemy = gridWidth - (gridWidth - totalEnemies)
-// calculates position of first enemy
+let enemyOne = 30
+let enemyTwo = 31
+let enemyThree = 32
+let enemyFour = 33
+let enemyFive = 34
+let enemySix = 35
+let enemySeven = 36
+// sets initial enemy positions 
 
-let placeNewEnemy = firstEnemy - 1
-// used in the placeEnemy function to determine the new enemy position based on the length of the enemy array
 
 let playerPosition = parseFloat(Math.floor(totalNumberOfGridCells - ( gridWidth / 2)))
 
@@ -78,6 +76,7 @@ function removePlayer() {
 // this removes the player from the player position
 
 // Player Functions
+
 
 function movePlayer(event) {
   const x = playerPosition % gridWidth
@@ -104,34 +103,69 @@ function movePlayer(event) {
 
 // Enemy Functions
 
-function placeEnemies() {
-  enemyArray.push(firstEnemy)
-  while (currentTotalEnemies < totalEnemies){
-    console.log('place new', placeNewEnemy)
-    enemyArray.push(placeNewEnemy)
-    cells[placeNewEnemy].classList.add(enemy)
-    currentTotalEnemies++
-    placeNewEnemy--
-    
-  }
-  enemyArray.reverse()
+function addEnemyClass() {
+  cells[enemyOne].classList.add(enemy)
+  cells[enemyTwo].classList.add(enemy)
+  cells[enemyThree].classList.add(enemy)
+  cells[enemyFour].classList.add(enemy)
+  cells[enemyFive].classList.add(enemy)
+  cells[enemySix].classList.add(enemy)
+  cells[enemySeven].classList.add(enemy)
+
 }
+console.log(enemyOne)
 
-// this places enemies into the enemy array depending on the total enemies count. For some reason it comes out backward so i reversed it.
 
-function moveEnemiesRight(){
+
+//this adds an enemy class to all the hardcoded enemies
+
+function removeEnemyClass() {
+  cells[enemyOne].classList.remove(enemy)
+  cells[enemyTwo].classList.remove(enemy)
+  cells[enemyThree].classList.remove(enemy)
+  cells[enemyFour].classList.remove(enemy)
+  cells[enemyFive].classList.remove(enemy)
+  cells[enemySix].classList.remove(enemy)
+  cells[enemySeven].classList.remove(enemy)
+
+}
+// this removes the enemy class
+
+
+
+function moveEnemiesRight() {
   timer = setInterval(() => {
-    if (firstEnemy <= totalNumberOfGridCells - gridWidth) {
-      cells[firstEnemy].classList.remove(enemy)
-      firstEnemy++
-      cells[firstEnemy].classList.add(enemy)
-      console.log(firstEnemy)
+    if (enemyOne <= totalNumberOfGridCells - gridWidth) {
+      removeEnemyClass()
+      enemyOne++
+      enemyTwo++
+      enemyThree++
+      enemyFour++
+      enemyFive++
+      enemySix++
+      enemySeven++
+      addEnemyClass()
+
     }
   }, 100)
 }
 
+function moveEnemiesLeft() {
+  timer = setInterval(() => {
+    if (enemyOne > 0 ) {
+      removeEnemyClass()
+      enemyOne--
+      enemyTwo--
+      enemyThree--
+      enemyFour--
+      enemyFive--
+      enemySix--
+      enemySeven--
+      addEnemyClass()
 
-console.log('en arr2', enemyArray)
+    }
+  }, 100)
+}
 
 
 // moveEnemiesRight()
@@ -139,8 +173,10 @@ console.log('en arr2', enemyArray)
 // Event Listeners
 
 
-start.addEventListener('click', moveEnemiesRight)
+start.addEventListener('click', moveEnemiesLeft)
 window.addEventListener('keyup', movePlayer)
 
 
 mainFunction()
+addEnemyClass()
+
