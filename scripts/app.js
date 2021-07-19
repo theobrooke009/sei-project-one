@@ -9,7 +9,7 @@ let enemyArray = [0, 1, 2, 3, 4, 5, 6]
 
 // Grid variables
 
-const width = 13
+let width = 13
 const cellCount = width * width
 
 // Game Variables
@@ -22,7 +22,6 @@ const enemy = 'enemy'
 const missileClass = 'missile'
 
 let playerPosition = parseFloat(Math.floor(cellCount - (width / 2)))
-let weaponPosition = playerPosition
 let leadEnemyPosition = enemyArray[6]
 let enemyTwo = enemyArray[(leadEnemyPosition - 1)]
 let enemyThree = enemyArray[(leadEnemyPosition - 2)]
@@ -31,12 +30,14 @@ let enemyFive = enemyArray[(leadEnemyPosition - 4)]
 let enemySix = enemyArray[(leadEnemyPosition - 5)]
 let enemySeven = enemyArray[(leadEnemyPosition - 6)]
 let shotInProgress = false
-
-
+let missilePoint = 9
+let row = 1
 
 // Functions
 
 //player functions
+
+
 function addPlayer() {
   cells[playerPosition].classList.add(playerClass)
 }
@@ -51,12 +52,12 @@ function weaponClassNuke() {
   cells.forEach(cell => cell.classList.remove(weaponClass))
 }
 
-function addWeapon() {
-  cells[weaponPosition].classList.add(weaponClass)
-}
+// function addWeapon() {
+//   cells[weaponPosition].classList.add(weaponClass)
+// }
 
 function missleClassAdd() {
-  cells.forEach(cell => cell.classList.add(missileClass))
+  cells[missilePoint].classList.add(missileClass)
 }
 
 function missleClassRemove() {
@@ -67,14 +68,16 @@ function missleClassRemove() {
 
 
 // this changes the array just fine but I cant work out how to access the elements and apply them to enemy positions
-// function mapArray() {
-//   if (leadEnemyPosition < cellCount) {
-//     enemyArray = enemyArray.map((enemy) => {
-//       return enemy + 1 
-//     })
+
+function mapArray() {
+  if (leadEnemyPosition < cellCount) {
+    enemyArray = enemyArray.map((enemy) => {
+      enemy++ 
+      console.log(enemy)
+    })
  
-//   }
-// }
+  }
+}
 
 function addLeadEnemy() {
   cells[leadEnemyPosition].classList.add(leadEnemy)
@@ -105,21 +108,40 @@ function moveEnemies() {
     const y = Math.floor(leadEnemyPosition / width)
     if (y >= 0) {
 
-      if (leadEnemyPosition < cellCount - width){
-
+      if (x < width - 1 && leadEnemyPosition < cellCount - width){
         removeLeadEnemy()
-        leadEnemyPosition++
-        enemyTwo++
-        enemyThree++
-        enemyFour++
-        enemyFive++
-        enemySix++
-        enemySeven++
+        
         addLeadEnemy()
+        
+        console.log(row)
 
-      } else {
+      } else if (width !== 0 && x === width - 1){
+        row += 1
         removeLeadEnemy()
-        return
+        leadEnemyPosition += width
+        enemyTwo += width
+        enemyThree += width
+        enemyFour += width
+        enemyFive += width
+        enemySix += width
+        enemySeven += width
+        leadEnemyPosition--
+        width = 0
+        addLeadEnemy()
+        console.log(row)
+        
+
+      } else if (width === 0 && x > 0 && leadEnemyPosition < cellCount - width) {
+        removeLeadEnemy()
+        leadEnemyPosition--
+        enemyTwo--
+        enemyThree--
+        enemyFour--
+        enemyFive--
+        enemySix--
+        enemySeven--
+        addLeadEnemy()
+        width = 13
       }
    
     }
@@ -155,14 +177,11 @@ function xAxisMove(event) {
     case 39:
       if (x < width - 1) {
         playerPosition++
-        weaponPosition = playerPosition
       }
       break
     case 37:
       if (x > 0) {
         playerPosition--
-        weaponPosition = playerPosition
-      
       }
       break
   }
@@ -173,44 +192,54 @@ function xAxisMove(event) {
 function endShot() {
   clearInterval(timer)
   weaponClassNuke()
-  shotInProgress = false
+  
 }
 
 
 function fireWeapon(event) {
+  let shotInProgress = false
+  let weaponPosition = playerPosition + width
+
+  function addWeapon() {
+    cells[weaponPosition].classList.add(weaponClass)
+  }
+
   timer = setInterval(() => {
-    const x = playerPosition % width
+  
     const y = Math.floor(playerPosition / width)
+  
     switch (event.keyCode) {
-
       case 69:
-
-        if (y > 0 && weaponPosition >= width) {
+        
+        if (y > 0 && shotInProgress === false ) {
           weaponClassNuke()
           weaponPosition -= width
           addWeapon(weaponPosition)
-          console.log(weaponPosition)
+          
         } else {
           endShot()
+          shotInProgress = true
+        
+          return
         }
-
-
-        console.log(shotInProgress)
+       
         break
-
         
     } 
   }, 100
   ) 
+  
 }
 
 function enemyBomb() {
   timer = setInterval(() => {
+    const y = Math.floor(playerPosition / width)
+    
     if (leadEnemyPosition < cellCount - (width * 2)) {
-      let rNJesus = Math.floor((Math.random() * cellCount) + 1)
-      if (cells[rNJesus].classList.contains(enemy)){
+    //   let rNJesus = Math.floor((Math.random() * cellCount) + 1)
+      if (cells[missilePoint].classList.contains(enemy)){
         missleClassRemove()
-        rNJesus += width
+        missilePoint += width
         missleClassAdd()
         console.log('fire bomb')
       }
