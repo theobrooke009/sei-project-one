@@ -40,11 +40,8 @@ function buildGrid() {
 // this creates divs and pushes them into the cells array, thus creating the board. Perameters are defined in CSS.
 
 // VARIABLES
-
 let timer = 0
 // call this to work setIntervals
-
-let row = 1
 
 const playerClass = 'player'
 const weaponClass = 'weapon'
@@ -131,7 +128,7 @@ function removeEnemyClass() {
 
 function moveEnemiesRight() {
   timer = setInterval(() => {
-    if (enemyOne < row * (gridWidth - 1)) {
+    if (enemySeven >= (gridWidth * row) - gridWidth && enemyOne < row * (gridWidth - 1)) {
       removeEnemyClass()
       enemyOne++
       enemyTwo++
@@ -141,20 +138,18 @@ function moveEnemiesRight() {
       enemySix++
       enemySeven++
       addEnemyClass()
-      console.log('enemy on is', enemyOne)
     } else {
       row++
-      console.log(row)
       moveEnemiesDown()
       clearInterval(timer)
+      return
     }
   }, 100)
 }
-// Moves enemies to the right while enemyOne is less than gridsize - width
 
 function moveEnemiesLeft() {
   timer = setInterval(() => {
-    if (enemySeven !== (gridWidth * row) - gridWidth) {
+    if (enemyOne === row * (gridWidth - 1) && enemySeven !== (gridWidth * row) - gridWidth) {
       removeEnemyClass()
       enemyOne--
       enemyTwo--
@@ -166,15 +161,13 @@ function moveEnemiesLeft() {
       addEnemyClass()
       console.log((gridWidth * row) - gridWidth)
     } else {
-      row++
-      console.log(row)
       moveEnemiesDown()
       clearInterval(timer)
+      return
     }
   }, 100
   )
 }
-
 
 // Moves enemies to the left while enemyOne is less than gridsize - width
 
@@ -189,13 +182,53 @@ function moveEnemiesDown() {
   enemySeven += gridWidth
   addEnemyClass()
 }
+
 function completeEnemyMovement(){
-  if (row % 2 !== 0){
-    moveEnemiesRight()
-  } else if (row % 2 === 0){
-    moveEnemiesLeft
-  }
+  let row = 1
+  timer = setInterval(() => {
+    if (row % 2 !== 0){
+      if (enemySeven >= (gridWidth * row) - gridWidth && enemyOne < row * (gridWidth - 1)) {
+        removeEnemyClass()
+        enemyOne++
+        enemyTwo++
+        enemyThree++
+        enemyFour++
+        enemyFive++
+        enemySix++
+        enemySeven++
+        addEnemyClass()
+      } else {
+        moveEnemiesDown(),
+        console.log(row)
+        console.log('7', enemySeven)
+        console.log('1', enemyOne)
+        clearInterval(timer)
+      }
+    } else if (row % 2 === 0) {    
+      row++
+      if (enemyOne === row * (gridWidth - 1) && enemySeven !== (gridWidth * row) - gridWidth) {
+        removeEnemyClass()
+        console.log(row)
+        enemyOne--
+        enemyTwo--
+        enemyThree--
+        enemyFour--
+        enemyFive--
+        enemySix--
+        enemySeven--
+        addEnemyClass()
+      } else {
+        moveEnemiesDown()
+        return
+      }
+    } else {
+      clearInterval(timer)
+    }
+  }, 100)
+
 }
+
+
 
 
 
