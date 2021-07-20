@@ -53,3 +53,15 @@ body {
 .enemyBomb {
   background-color: crimson;
 }
+
+.weaponFrameOne{
+  background-color: chartreuse;
+}
+
+.backgroundColour {
+  background-color: white;
+}
+
+.weaponFrameTwo{
+  background-color: cyan;
+}
