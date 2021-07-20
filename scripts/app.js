@@ -44,6 +44,7 @@ function buildGrid() {
 let timer = 0
 // call this to work setIntervals
 
+let row = 0
 
 const playerClass = 'player'
 const weaponClass = 'weapon'
@@ -51,13 +52,13 @@ const enemy = 'enemy'
 const enemyBomb = 'enemyBomb'
 // CSS classes stored as variables for ease of use
 
-let enemyOne = 30
-let enemyTwo = 31
-let enemyThree = 32
-let enemyFour = 33
-let enemyFive = 34
-let enemySix = 35
-let enemySeven = 36
+let enemyOne = 25
+let enemyTwo = 24
+let enemyThree = 23
+let enemyFour = 22
+let enemyFive = 21
+let enemySix = 20
+let enemySeven = 19
 // sets initial enemy positions 
 
 
@@ -113,9 +114,6 @@ function addEnemyClass() {
   cells[enemySeven].classList.add(enemy)
 
 }
-console.log(enemyOne)
-
-
 
 //this adds an enemy class to all the hardcoded enemies
 
@@ -133,7 +131,7 @@ function removeEnemyClass() {
 
 function moveEnemiesRight() {
   timer = setInterval(() => {
-    if (enemyOne <= totalNumberOfGridCells - gridWidth) {
+    if (row % 2 !== 0 && enemyOne < row * (gridWidth - 1)) {
       removeEnemyClass()
       enemyOne++
       enemyTwo++
@@ -143,14 +141,20 @@ function moveEnemiesRight() {
       enemySix++
       enemySeven++
       addEnemyClass()
-
+      console.log('enemy on is', enemyOne)
+    } else {
+      row++
+      console.log(row)
+      moveEnemiesDown()
+      clearInterval(timer)
     }
   }, 100)
 }
+// Moves enemies to the right while enemyOne is less than gridsize - width
 
 function moveEnemiesLeft() {
   timer = setInterval(() => {
-    if (enemyOne > 0 ) {
+    if (row % 2 === 0 && enemySeven !== (gridWidth * row) - gridWidth) {
       removeEnemyClass()
       enemyOne--
       enemyTwo--
@@ -160,13 +164,36 @@ function moveEnemiesLeft() {
       enemySix--
       enemySeven--
       addEnemyClass()
-
+      console.log((gridWidth * row) - gridWidth)
+    } else {
+      row++
+      console.log(row)
+      moveEnemiesDown()
+      clearInterval(timer)
     }
-  }, 100)
+  }, 100
+  )
 }
 
 
-// moveEnemiesRight()
+// Moves enemies to the left while enemyOne is less than gridsize - width
+
+function moveEnemiesDown() {
+  removeEnemyClass()
+  enemyOne += gridWidth
+  enemyTwo += gridWidth
+  enemyThree += gridWidth
+  enemyFour += gridWidth
+  enemyFive += gridWidth
+  enemySix += gridWidth
+  enemySeven += gridWidth
+  addEnemyClass()
+}
+function completeEnemyMovement(){
+  row = 1
+
+}
+
 
 // Event Listeners
 
@@ -178,43 +205,43 @@ window.addEventListener('keyup', movePlayer)
 mainFunction()
 addEnemyClass()
 
-function endShot() {
-  clearInterval(timer)
-  weaponClassNuke()
+// function endShot() {
+//   clearInterval(timer)
+//   weaponClassNuke()
   
-}
+// }
 
-function fireWeapon(event) {
-  let weaponPosition = playerPosition + width
+// function fireWeapon(event) {
+//   let weaponPosition = playerPosition + width
 
-  function addWeapon() {
-    cells[weaponPosition].classList.add(weaponClass)
-  }
+//   function addWeapon() {
+//     cells[weaponPosition].classList.add(weaponClass)
+//   }
   
-  timer = setInterval(() => {
+//   timer = setInterval(() => {
   
-    const y = Math.floor(playerPosition / width)
+//     const y = Math.floor(playerPosition / gridWidth)
   
-    switch (event.keyCode) {
-      case 69:
-        if (weaponPosition >= y + 1) {
+//     switch (event.keyCode) {
+//       case 69:
+//         if (weaponPosition >= y + 1) {
             
-          weaponClassNuke()
-          weaponPosition -= width
-          addWeapon(weaponPosition)
-          console.log(weaponPosition)
+//           weaponClassNuke()
+//           weaponPosition -= gridWidth
+//           addWeapon(weaponPosition)
+//           console.log(weaponPosition)
             
-        } else {
-          clearInterval(timer)
-          weaponClassNuke()
-          return
-        }
-        break      
-    } 
-  }) 
-}
+//         } else {
+//           clearInterval(timer)
+//           weaponClassNuke()
+//           return
+//         }
+//         break      
+//     } 
+//   }) 
+// }
 
-function weaponClassNuke() {
-  cells.forEach(cell => cell.classList.remove(weaponClass))
-}
+// function weaponClassNuke() {
+//   cells.forEach(cell => cell.classList.remove(weaponClass))
+// }
 
