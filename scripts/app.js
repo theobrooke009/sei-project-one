@@ -44,7 +44,7 @@ function buildGrid() {
 let timer = 0
 // call this to work setIntervals
 
-let row = 0
+let row = 1
 
 const playerClass = 'player'
 const weaponClass = 'weapon'
@@ -52,13 +52,13 @@ const enemy = 'enemy'
 const enemyBomb = 'enemyBomb'
 // CSS classes stored as variables for ease of use
 
-let enemyOne = 25
-let enemyTwo = 24
-let enemyThree = 23
-let enemyFour = 22
-let enemyFive = 21
-let enemySix = 20
-let enemySeven = 19
+let enemyOne = 6
+let enemyTwo = 5
+let enemyThree = 4
+let enemyFour = 3
+let enemyFive = 2
+let enemySix = 1
+let enemySeven = 0
 // sets initial enemy positions 
 
 
@@ -131,7 +131,7 @@ function removeEnemyClass() {
 
 function moveEnemiesRight() {
   timer = setInterval(() => {
-    if (row % 2 !== 0 && enemyOne < row * (gridWidth - 1)) {
+    if (enemyOne < row * (gridWidth - 1)) {
       removeEnemyClass()
       enemyOne++
       enemyTwo++
@@ -154,7 +154,7 @@ function moveEnemiesRight() {
 
 function moveEnemiesLeft() {
   timer = setInterval(() => {
-    if (row % 2 === 0 && enemySeven !== (gridWidth * row) - gridWidth) {
+    if (enemySeven !== (gridWidth * row) - gridWidth) {
       removeEnemyClass()
       enemyOne--
       enemyTwo--
@@ -190,15 +190,19 @@ function moveEnemiesDown() {
   addEnemyClass()
 }
 function completeEnemyMovement(){
-  row = 1
-
+  if (row % 2 !== 0){
+    moveEnemiesRight()
+  } else if (row % 2 === 0){
+    moveEnemiesLeft
+  }
 }
+
 
 
 // Event Listeners
 
 
-start.addEventListener('click', moveEnemiesLeft)
+start.addEventListener('click', completeEnemyMovement)
 window.addEventListener('keyup', movePlayer)
 
 
