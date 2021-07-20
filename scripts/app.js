@@ -185,9 +185,9 @@ function moveEnemiesDown() {
 
 function completeEnemyMovement(){
   let row = 1
-  timer = setInterval(() => {
-    if (row % 2 !== 0){
-      if (enemySeven >= (gridWidth * row) - gridWidth && enemyOne < row * (gridWidth - 1)) {
+  if (row % 2 !== 0){
+    timer = setInterval(() => {
+      if (enemyOne < row * (gridWidth - 1)) {
         removeEnemyClass()
         enemyOne++
         enemyTwo++
@@ -198,17 +198,15 @@ function completeEnemyMovement(){
         enemySeven++
         addEnemyClass()
       } else {
-        moveEnemiesDown(),
+        row++
         console.log(row)
-        console.log('7', enemySeven)
-        console.log('1', enemyOne)
-        clearInterval(timer)
+        return moveEnemiesDown()
       }
-    } else if (row % 2 === 0) {    
-      row++
+    }, 100)
+  } else if (row % 2 === 0){
+    timer = setInterval(() => {
       if (enemyOne === row * (gridWidth - 1) && enemySeven !== (gridWidth * row) - gridWidth) {
         removeEnemyClass()
-        console.log(row)
         enemyOne--
         enemyTwo--
         enemyThree--
@@ -217,15 +215,18 @@ function completeEnemyMovement(){
         enemySix--
         enemySeven--
         addEnemyClass()
+        console.log((gridWidth * row) - gridWidth)
       } else {
         moveEnemiesDown()
+        clearInterval(timer)
         return
       }
-    } else {
-      clearInterval(timer)
-    }
-  }, 100)
-
+    }, 100
+    )
+  } else {
+    console.log('here')
+  }
+  console.log('row', row)
 }
 
 
@@ -235,50 +236,50 @@ function completeEnemyMovement(){
 // Event Listeners
 
 
-start.addEventListener('click', completeEnemyMovement)
-window.addEventListener('keyup', movePlayer)
 
 
 mainFunction()
 addEnemyClass()
 
-// function endShot() {
-//   clearInterval(timer)
-//   weaponClassNuke()
+function endShot() {
+  clearInterval(timer)
+  weaponClassNuke()
   
-// }
+}
 
-// function fireWeapon(event) {
-//   let weaponPosition = playerPosition + width
+function fireWeapon(event) {
+  let weaponPosition = playerPosition
 
-//   function addWeapon() {
-//     cells[weaponPosition].classList.add(weaponClass)
-//   }
-  
-//   timer = setInterval(() => {
-  
-//     const y = Math.floor(playerPosition / gridWidth)
-  
-//     switch (event.keyCode) {
-//       case 69:
-//         if (weaponPosition >= y + 1) {
-            
-//           weaponClassNuke()
-//           weaponPosition -= gridWidth
-//           addWeapon(weaponPosition)
-//           console.log(weaponPosition)
-            
-//         } else {
-//           clearInterval(timer)
-//           weaponClassNuke()
-//           return
-//         }
-//         break      
-//     } 
-//   }) 
-// }
+  function addWeapon() {
+    cells[weaponPosition].classList.add(weaponClass)
+  }
+  function removeWeapon() {
+    cells[weaponPosition].classList.remove(weaponClass)
+  }
 
-// function weaponClassNuke() {
-//   cells.forEach(cell => cell.classList.remove(weaponClass))
-// }
+  const y = Math.floor(playerPosition / gridWidth)
+
+  switch (event.keyCode) {
+    case 69:
+      timer = setInterval(() => {
+        if (weaponPosition >= y + 1) {
+          removeWeapon()
+          weaponPosition -= gridWidth
+          addWeapon(weaponPosition)
+        } else (
+          removeWeapon()
+        )
+      }, 50 )
+      break
+  }
+}
+  
+function weaponClassNuke() {
+  cells.forEach(cell => cell.classList.remove(weaponClass))
+}
+
+
+window.addEventListener('keyup', fireWeapon)
+start.addEventListener('click', completeEnemyMovement)
+window.addEventListener('keyup', movePlayer)
 
