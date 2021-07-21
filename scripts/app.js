@@ -150,7 +150,7 @@ function moveEnemiesRight(){
         
       }
     })
-  }, 50)
+  }, 2000)
   
 }
 
@@ -222,6 +222,13 @@ function fireWeapon(event) {
         const index = enemyArray.indexOf(weaponPosition)
         deadEnemies.push(index)
         totalEnemies--
+        if (totalEnemies === 0){
+          boardNuke()
+          setTimeout(() => {
+            boardNuke()
+            location.reload()
+          }, 2000)
+        }
         if (index > - 1){
           enemyArray.splice(index, 1)
           clearInterval(timer)
@@ -233,7 +240,6 @@ function fireWeapon(event) {
           addWeapon(weaponPosition)
             
         } else {
-          addWeaponFrames()
           cells[weaponPosition].classList.remove(weaponClass)
           clearInterval(timer)
         }
