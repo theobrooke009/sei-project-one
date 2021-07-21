@@ -1,9 +1,5 @@
 // MAIN FUNCTION
 
-function mainFunction(){
-  buildGrid()
-  placePlayer()
-}
 
 
 
@@ -21,8 +17,11 @@ const start = document.querySelector('.start')
 const cells = []
 // the blank array which the grid divs are pushed into
 
-let enemyArray = [0, 1, 2, 3, 4, 5, 6]
+let enemyArray = [0, 1, 2, 3, 4, 5, 6, 7, 13, 14, 15, 16, 17, 18, 19, 20, 26, 27, 28, 29, 30, 31, 32, 33 ]
 // this represents the starting position of every enemy on the board
+let deadEnemies = []
+
+let enemyArrayLength = enemyArray.length
 
 // Grid & grid variables
 
@@ -37,29 +36,20 @@ function buildGrid() {
     cells.push(newCell)
   }
 }
+buildGrid()
+
 // this creates divs and pushes them into the cells array, thus creating the board. Perameters are defined in CSS.
 
 // VARIABLES
+
 let timer = 0
 // call this to work setIntervals
 
 const playerClass = 'player'
 const weaponClass = 'weapon'
-const enemy = 'enemy'
 const enemyBomb = 'enemyBomb'
+let enemyAtEdge = false
 // CSS classes stored as variables for ease of use
-
-let enemyOne = enemyArray[6]
-let enemyTwo = enemyArray[5]
-let enemyThree = enemyArray[4]
-let enemyFour = enemyArray[3]
-let enemyFive = enemyArray[2]
-let enemySix = enemyArray[1]
-let enemySeven = enemyArray[0]
-// sets initial enemy positions 
-
-let totalEnemies = 7
-
 
 let playerPosition = parseFloat(Math.floor(totalNumberOfGridCells - ( gridWidth / 2)))
 
@@ -68,6 +58,7 @@ let playerPosition = parseFloat(Math.floor(totalNumberOfGridCells - ( gridWidth 
 function placePlayer() {
   cells[playerPosition].classList.add(playerClass)
 }
+placePlayer()
 // this places the player class at the player position
 
 function removePlayer() {
@@ -104,153 +95,152 @@ function movePlayer(event) {
 // Enemy Functions
 
 function addEnemyClass() {
-  cells[enemyOne].classList.add(enemy)
-  cells[enemyTwo].classList.add(enemy)
-  cells[enemyThree].classList.add(enemy)
-  cells[enemyFour].classList.add(enemy)
-  cells[enemyFive].classList.add(enemy)
-  cells[enemySix].classList.add(enemy)
-  cells[enemySeven].classList.add(enemy)
-
+  // for (let i = 0 ; i <= enemyArray.length - 1 ; i++){
+  //   cells[enemyArray].classList.add('enemy')
+  //   console.log('add enemy class', enemyArray[i])
+  // }
+  enemyArray.forEach(enemy => {
+    cells[enemy].classList.add('enemy')
+    
+  })
 }
 
-//this adds an enemy class to all the hardcoded enemies
+
+
+
+
+
+//this adds an enemy class to all enemies
 
 function removeEnemyClass() {
-  cells[enemyOne].classList.remove(enemy)
-  cells[enemyTwo].classList.remove(enemy)
-  cells[enemyThree].classList.remove(enemy)
-  cells[enemyFour].classList.remove(enemy)
-  cells[enemyFive].classList.remove(enemy)
-  cells[enemySix].classList.remove(enemy)
-  cells[enemySeven].classList.remove(enemy)
-
+  enemyArray.forEach(enemy => {
+    cells[enemy].classList.remove('enemy')
+    
+  })
 }
-// this removes the enemy class
 
-function moveEnemiesRight() {
-  timer = setInterval(() => {
-    if (enemyOne < totalNumberOfGridCells) {
-      removeEnemyClass()
-      if (cells[enemyOne].classList.contains(weaponClass)){
-        const index = enemyArray.indexOf(enemyOne)
-        if (index > -1) {
-          enemyArray.splice(index, 1)
-        }
-        console.log(enemyArray)
-      } 
-      enemyOne++
-      enemyTwo++
-      enemyThree++
-      enemyFour++
-      enemyFive++
-      enemySix++
-      enemySeven++
-      addEnemyClass()
-    } else {
-      clearInterval(timer)
-      return
-    }
+
+// enemyArray.forEach(enemy => {
+//   cells[enemy].classList.add('enemy')
+// })
+
+
+// this removes them
+
+// function incrementEnemy() {
+//   enemyArray = enemyArray.map(enemy => {
+//     console.log('increment', enemy)
+//     return enemy + 1
+//   })
+// }
+
+
+
+// function incrementEnemy() {
+//   for (let i = 0 ; i < enemyArray.length - 1 ; i++){
+//     cells[enemyArray[i]]++
+  
+//   }
+// }
+// this adds one to all objects in the array
+
+// function moveEnemiesRight() {
+//   timer = setInterval(() => {
+//     let x = 0
+//     while (x < gridWidth){
+//       x++
+//       removeEnemyClass()
+//       incrementEnemy()
+//       addEnemyClass()
+//       console.log('x =', x)
+//     } 
+//     clearInterval(timer)
+//   }, 500)
+// }
+
+
+// function moveEnemiesRight(){
+  
+//   setInterval(() => {
+//     return enemyArray = enemyArray.map(enemy => {
+//       removeEnemyClass()
+//       console.log('increment', enemy)
+//       enemy + 1
+//       addEnemyClass()
+//     })
+//   }, 500) 
+// }
+// moveEnemiesRight()
+
+function moveEnemiesRight(){
+  
+  setInterval(() =>{
+    cells.forEach(cell => {
+      cell.classList.remove('enemy')
+    })
+    enemyArray = enemyArray.map(enemy => {
+      const newPosition = enemy + 1
+      cells[newPosition].classList.add('enemy')
+      return newPosition
+    })
   }, 500)
 }
 
+function moveEnemiesDown(){
+  
+  setInterval(() =>{
+    cells.forEach(cell => {
+      cell.classList.remove('enemy')
+    })
+    enemyArray = enemyArray.map(enemy => {
+      const newPosition = enemy + gridWidth
+      cells[newPosition].classList.add('enemy')
+      return newPosition
+    })
+  }, 500)
+}
 
-function moveEnemiesLeft() {
-  timer = setInterval(() => {
-    if (enemyOne === row * (gridWidth - 1) && enemySeven !== (gridWidth * row) - gridWidth) {
-      removeEnemyClass()
-      enemyOne--
-      enemyTwo--
-      enemyThree--
-      enemyFour--
-      enemyFive--
-      enemySix--
-      enemySeven--
-      addEnemyClass()
-      console.log((gridWidth * row) - gridWidth)
-    } else {
-      moveEnemiesDown()
-      clearInterval(timer)
-      return
-    }
-  }, 100
+function moveEnemiesleft() {
+  setInterval(() =>{
+    cells.forEach(cell => {
+      cell.classList.remove('enemy')
+    })
+    enemyArray = enemyArray.map(enemy => {
+      const newPosition = enemy + 1
+      cells[newPosition].classList.add('enemy')
+      return newPosition
+    })
+  }, 500)
+}
+
+function movingEnemies() {
+  // let bottomRow = 3
+  // let topRow = 1
+  // let furthestRightEnemy = bottomRow * gridWidth / 2
+  // const furthestRight = bottomRow * gridWidth - 1
+  // console.log('fr', furthestRight)
+  // const furthestLeft = topRow * (gridWidth - 1) - (gridWidth - 1)
+  // console.log('hi', enemyArray[enemyArray.length - 1])
+  let furthestRightEnemy = enemyArray[enemyArray.length - 1] % gridWidth
+
+  
+  console.log(furthestRightEnemy)
+  if (enemyAtEdge === false && furthestRightEnemy < gridWidth - 1) {
+    
+    moveEnemiesRight()
+
+  } else (
+    enemyAtEdge = true,
+    topRow++,
+    bottomRow++,
+    console.log(topRow),
+    console.log(bottomRow),
+    console.log(enemyAtEdge)
   )
-}
 
-// Moves enemies to the left while enemyOne is less than gridsize - width
-
-function moveEnemiesDown() {
-  removeEnemyClass()
-  enemyOne += gridWidth
-  enemyTwo += gridWidth
-  enemyThree += gridWidth
-  enemyFour += gridWidth
-  enemyFive += gridWidth
-  enemySix += gridWidth
-  enemySeven += gridWidth
-  addEnemyClass()
-}
-
-function completeEnemyMovement(){
-  moveEnemiesRight()
-  // let row = 1
-  // if (row % 2 !== 0){
-  //   timer = setInterval(() => {
-  //     if (enemyOne < row * (gridWidth - 1)) {
-  //       removeEnemyClass()
-  //       enemyOne++
-  //       enemyTwo++
-  //       enemyThree++
-  //       enemyFour++
-  //       enemyFive++
-  //       enemySix++
-  //       enemySeven++
-  //       addEnemyClass()
-  //     } else {
-  //       row++
-  //       console.log(row)
-  //       return moveEnemiesDown()
-  //     }
-  //   }, 100)
-  // } else if (row % 2 === 0){
-  //   timer = setInterval(() => {
-  //     if (enemyOne === row * (gridWidth - 1) && enemySeven !== (gridWidth * row) - gridWidth) {
-  //       removeEnemyClass()
-  //       enemyOne--
-  //       enemyTwo--
-  //       enemyThree--
-  //       enemyFour--
-  //       enemyFive--
-  //       enemySix--
-  //       enemySeven--
-  //       addEnemyClass()
-  //       console.log((gridWidth * row) - gridWidth)
-  //     } else {
-  //       moveEnemiesDown()
-  //       clearInterval(timer)
-  //       return
-  //     }
-  //   }, 100
-  //   )
-  // } else {
-  //   console.log('here')
-  // }
-  // console.log('row', row)
 }
 
 
-
-
-
-// Event Listeners
-
-
-
-
-
-
-mainFunction()
-addEnemyClass()
 
 function fireWeapon(event) {
   let weaponPosition = playerPosition
@@ -260,10 +250,6 @@ function fireWeapon(event) {
   }
   function removeWeapon() {
     cells[weaponPosition].classList.remove(weaponClass)
-  }
-
-  function removeEnemy() {
-    cells[weaponPosition].classList.remove(enemy)
   }
 
   function addWeaponFrames(){
@@ -288,11 +274,9 @@ function fireWeapon(event) {
           cells[weaponPosition].classList.remove(enemy)
           cells[weaponPosition].classList.remove(weaponClass)
           const index = enemyArray.indexOf(weaponPosition)
-          enemyArray.pop()
-          console.log(enemyArray)
-          totalEnemies--
+
           addWeaponFrames()
-          console.log(totalEnemies)
+        
         } else {
           if (weaponPosition >= y + 1) {
             removeWeapon()
@@ -313,7 +297,9 @@ function fireWeapon(event) {
 
 
 
+// Event Listeners
+
 window.addEventListener('keyup', fireWeapon)
-start.addEventListener('click', moveEnemiesRight)
+start.addEventListener('click', movingEnemies)
 window.addEventListener('keyup', movePlayer)
 
