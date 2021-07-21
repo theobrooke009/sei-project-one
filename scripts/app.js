@@ -20,8 +20,8 @@ const cells = []
 let enemyArray = [0, 1, 2, 3, 4, 5, 6, 7, 13, 14, 15, 16, 17, 18, 19, 20, 26, 27, 28, 29, 30, 31, 32, 33 ]
 // this represents the starting position of every enemy on the board
 let deadEnemies = []
+let totalEnemies = 24
 
-let enemyArrayLength = enemyArray.length
 
 // Grid & grid variables
 
@@ -106,10 +106,6 @@ function addEnemyClass() {
 }
 
 
-
-
-
-
 //this adds an enemy class to all enemies
 
 function removeEnemyClass() {
@@ -118,59 +114,6 @@ function removeEnemyClass() {
     
   })
 }
-
-
-// enemyArray.forEach(enemy => {
-//   cells[enemy].classList.add('enemy')
-// })
-
-
-// this removes them
-
-// function incrementEnemy() {
-//   enemyArray = enemyArray.map(enemy => {
-//     console.log('increment', enemy)
-//     return enemy + 1
-//   })
-// }
-
-
-
-// function incrementEnemy() {
-//   for (let i = 0 ; i < enemyArray.length - 1 ; i++){
-//     cells[enemyArray[i]]++
-  
-//   }
-// }
-// this adds one to all objects in the array
-
-// function moveEnemiesRight() {
-//   timer = setInterval(() => {
-//     let x = 0
-//     while (x < gridWidth){
-//       x++
-//       removeEnemyClass()
-//       incrementEnemy()
-//       addEnemyClass()
-//       console.log('x =', x)
-//     } 
-//     clearInterval(timer)
-//   }, 500)
-// }
-
-
-// function moveEnemiesRight(){
-  
-//   setInterval(() => {
-//     return enemyArray = enemyArray.map(enemy => {
-//       removeEnemyClass()
-//       console.log('increment', enemy)
-//       enemy + 1
-//       addEnemyClass()
-//     })
-//   }, 500) 
-// }
-// moveEnemiesRight()
 
 function moveEnemiesRight(){
   
@@ -181,6 +124,7 @@ function moveEnemiesRight(){
     enemyArray = enemyArray.map(enemy => {
       const newPosition = enemy + 1
       cells[newPosition].classList.add('enemy')
+      x++
       return newPosition
     })
   }, 500)
@@ -214,31 +158,32 @@ function moveEnemiesleft() {
 }
 
 function movingEnemies() {
-  // let bottomRow = 3
-  // let topRow = 1
-  // let furthestRightEnemy = bottomRow * gridWidth / 2
-  // const furthestRight = bottomRow * gridWidth - 1
-  // console.log('fr', furthestRight)
-  // const furthestLeft = topRow * (gridWidth - 1) - (gridWidth - 1)
-  // console.log('hi', enemyArray[enemyArray.length - 1])
-  let furthestRightEnemy = enemyArray[enemyArray.length - 1] % gridWidth
-
+  let row = 1
+  let x = row * gridWidth / 2
+  function moveEnemiesRight(){
   
-  console.log(furthestRightEnemy)
-  if (enemyAtEdge === false && furthestRightEnemy < gridWidth - 1) {
-    
+    setInterval(() =>{
+      cells.forEach(cell => {
+        cell.classList.remove('enemy')
+      })
+      enemyArray = enemyArray.map(enemy => {
+        const newPosition = enemy + 1
+        cells[newPosition].classList.add('enemy')
+        
+        console.log(x)
+        return newPosition
+      })
+      x++
+    }, 300)
+  }
+
+  if (x < gridWidth - 1){
     moveEnemiesRight()
-
-  } else (
-    enemyAtEdge = true,
-    topRow++,
-    bottomRow++,
-    console.log(topRow),
-    console.log(bottomRow),
-    console.log(enemyAtEdge)
-  )
-
+  
+  }
 }
+
+
 
 
 
@@ -264,33 +209,34 @@ function fireWeapon(event) {
   }
 
 
-  const y = Math.floor(playerPosition / gridWidth)
-
-  switch (event.keyCode) {
-    case 69:
-      timer = setInterval(() => {
-         
-        if (cells[weaponPosition].classList.contains('enemy')){
-          cells[weaponPosition].classList.remove(enemy)
-          cells[weaponPosition].classList.remove(weaponClass)
-          const index = enemyArray.indexOf(weaponPosition)
-
-          addWeaponFrames()
-        
-        } else {
-          if (weaponPosition >= y + 1) {
-            removeWeapon()
-            weaponPosition -= gridWidth
-            addWeapon(weaponPosition)
-            addWeaponFrames()
-          } else {
-            addWeaponFrames()
-            cells[weaponPosition].classList.remove(weaponClass)
-            clearInterval(timer)
-          }
+  if (event.keyCode === 69) {
+    const timer = setInterval(() => {
+      const y = Math.floor(playerPosition / gridWidth)
+      if (cells[weaponPosition].classList.contains('enemy')){
+        cells[weaponPosition].classList.remove(weaponClass)
+        cells[weaponPosition].classList.remove('enemy')
+        const index = enemyArray.indexOf(weaponPosition)
+        deadEnemies.push(index)
+        totalEnemies--
+        console.log(totalEnemies)
+        if (index > - 1){
+          enemyArray.splice(index, 1)
+          clearInterval(timer)
         }
-      }, 50 )
-      break
+      } else {
+        if (weaponPosition >= y + 1) {
+          removeWeapon()
+          weaponPosition -= gridWidth
+          addWeapon(weaponPosition)
+            
+        } else {
+          addWeaponFrames()
+          cells[weaponPosition].classList.remove(weaponClass)
+          clearInterval(timer)
+        }
+      }
+    }, 100 )
+
   }
 }
 
