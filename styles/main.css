@@ -65,3 +65,7 @@ body {
 .weaponFrameTwo{
   background-color: cyan;
 }
+
+.gibs {
+  background-color: tomato;
+}

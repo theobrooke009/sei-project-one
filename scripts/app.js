@@ -94,11 +94,26 @@ function movePlayer(event) {
 
 // Enemy Functions
 
+function boardNuke(){
+
+  cells.forEach(cell => cell.classList.remove('enemy'))
+
+  cells.forEach(cell => cell.classList.remove(weaponClass))
+  
+  cells.forEach(cell => cell.classList.remove('player'))
+  cells[67].textContent = 'G'
+  cells[68].textContent = 'A'
+  cells[69].textContent = 'M'
+  cells[70].textContent = 'E'
+  cells[71].textContent = 'O'
+  cells[72].textContent = 'V'
+  cells[73].textContent = 'E'
+  cells[74].textContent = 'R'
+  cells[75].textContent = '!'
+}
+
 function addEnemyClass() {
-  // for (let i = 0 ; i <= enemyArray.length - 1 ; i++){
-  //   cells[enemyArray].classList.add('enemy')
-  //   console.log('add enemy class', enemyArray[i])
-  // }
+
   enemyArray.forEach(enemy => {
     cells[enemy].classList.add('enemy')
     
@@ -115,19 +130,28 @@ function removeEnemyClass() {
   })
 }
 
+
 function moveEnemiesRight(){
-  
   setInterval(() =>{
     cells.forEach(cell => {
       cell.classList.remove('enemy')
     })
     enemyArray = enemyArray.map(enemy => {
       const newPosition = enemy + 1
-      cells[newPosition].classList.add('enemy')
-      x++
-      return newPosition
+      if (newPosition < totalNumberOfGridCells) {
+        cells[newPosition].classList.add('enemy')
+        return newPosition
+      } else {
+        boardNuke()
+        setTimeout(() => {
+          boardNuke()
+          location.reload()
+        }, 2000)
+        
+      }
     })
-  }, 500)
+  }, 50)
+  
 }
 
 function moveEnemiesDown(){
@@ -158,33 +182,10 @@ function moveEnemiesleft() {
 }
 
 function movingEnemies() {
-  let row = 1
-  let x = row * gridWidth / 2
-  function moveEnemiesRight(){
-  
-    setInterval(() =>{
-      cells.forEach(cell => {
-        cell.classList.remove('enemy')
-      })
-      enemyArray = enemyArray.map(enemy => {
-        const newPosition = enemy + 1
-        cells[newPosition].classList.add('enemy')
-        
-        console.log(x)
-        return newPosition
-      })
-      x++
-    }, 300)
-  }
-
-  if (x < gridWidth - 1){
-    moveEnemiesRight()
-  
-  }
+  addEnemyClass() 
+  moveEnemiesRight()
+ 
 }
-
-
-
 
 
 function fireWeapon(event) {
@@ -197,28 +198,30 @@ function fireWeapon(event) {
     cells[weaponPosition].classList.remove(weaponClass)
   }
 
-  function addWeaponFrames(){
-   
-    cells[playerPosition].classList.remove(playerClass)
-    cells[playerPosition].classList.add('weaponFrameOne')
-    cells[playerPosition].classList.remove('weaponFrameOne')
-    cells[playerPosition].classList.add('weaponFrameTwo')
-    cells[playerPosition].classList.remove('weaponFrameTwo')
-    cells[playerPosition].classList.add(playerClass)
-
-  }
-
-
   if (event.keyCode === 69) {
     const timer = setInterval(() => {
+      
+      cells[playerPosition].classList.remove('player')
+      cells[playerPosition].classList.add('weaponFrameOne')
+      setTimeout(() => {
+        cells[playerPosition].classList.remove('weaponFrameOne')
+      }, 100)
+      cells[playerPosition].classList.add('player')
+
+      
       const y = Math.floor(playerPosition / gridWidth)
+      
+      console.log(y)
       if (cells[weaponPosition].classList.contains('enemy')){
         cells[weaponPosition].classList.remove(weaponClass)
         cells[weaponPosition].classList.remove('enemy')
+        cells[weaponPosition].classList.add('gibs')
+        setTimeout(() => {
+          cells[weaponPosition].classList.remove('gibs')
+        }, 50)
         const index = enemyArray.indexOf(weaponPosition)
         deadEnemies.push(index)
         totalEnemies--
-        console.log(totalEnemies)
         if (index > - 1){
           enemyArray.splice(index, 1)
           clearInterval(timer)
@@ -240,12 +243,42 @@ function fireWeapon(event) {
   }
 }
 
+function enemyFire() {
+  setInterval(() => {
+    let randomNumber = Math.floor((Math.random() * totalNumberOfGridCells))
+
+    if (cells[randomNumber].classList.contains('enemy') && !cells[randomNumber + gridWidth].classList.contains('enemy') ){
+      console.log('fire')
+      const y = Math.ceil(totalNumberOfGridCells)
+      setInterval(() => {
+
+        if (randomNumber >= y - 1){
+          cells[randomNumber].classList.remove('enemyBomb')
+          randomNumber += gridWidth
+          cells[randomNumber].classList.add('enemyBomb')
+        }
+      }, 1100)
+    } else {
+      return
+    }
+  }, 300)
+}
+
+
+// let randomNumber = Math.floor((Math.random() * 20) + 1)
+// if (cells[randomNumber].classList.contains('enemy')) {
+//   console.log('hi')
+// }
+// else {
+//   console.log(randomNumber)
+// }
 
 
 
 // Event Listeners
 
 window.addEventListener('keyup', fireWeapon)
+start.addEventListener('click', enemyFire)
 start.addEventListener('click', movingEnemies)
 window.addEventListener('keyup', movePlayer)
 
