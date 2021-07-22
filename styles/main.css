@@ -32,10 +32,14 @@ body {
   flex-grow: 1;
   height: 7.5%;
   width: 7.5%;
+
+ 
 }
 
 .player{
-  background-color: green;
+  background-image: url('../assets/shotgun.png');
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 .leadEnemy {
@@ -47,7 +51,9 @@ body {
 }
 
 .enemy {
-  background-color: coral;
+  background-image: url('../assets/cacodemonone.png');
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 .enemyBomb {
@@ -55,7 +61,9 @@ body {
 }
 
 .weaponFrameOne{
-  background-color: chartreuse;
+  background-image: url('../assets/sgframetwo.png');
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 .backgroundColour {
@@ -67,5 +75,11 @@ body {
 }
 
 .gibs {
-  background-color: tomato;
+  background-image: url('../assets/ludicrous\ gibs.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.rocketLauncher {
+  background-color: yellow;
 }

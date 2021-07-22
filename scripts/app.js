@@ -16,7 +16,7 @@ const start = document.querySelector('.start')
 // Arrays
 const cells = []
 // the blank array which the grid divs are pushed into
-
+let gamePlaying = true
 let enemyArray = [0, 1, 2, 3, 4, 5, 6, 7, 13, 14, 15, 16, 17, 18, 19, 20, 26, 27, 28, 29, 30, 31, 32, 33 ]
 // this represents the starting position of every enemy on the board
 let deadEnemies = []
@@ -48,7 +48,6 @@ let timer = 0
 const playerClass = 'player'
 const weaponClass = 'weapon'
 const enemyBomb = 'enemyBomb'
-let enemyAtEdge = false
 // CSS classes stored as variables for ease of use
 
 let playerPosition = parseFloat(Math.floor(totalNumberOfGridCells - ( gridWidth / 2)))
@@ -95,6 +94,7 @@ function movePlayer(event) {
 // Enemy Functions
 
 function boardNuke(){
+  gamePlaying = false
 
   cells.forEach(cell => cell.classList.remove('enemy'))
 
@@ -132,26 +132,33 @@ function removeEnemyClass() {
 
 
 function moveEnemiesRight(){
-  setInterval(() =>{
-    cells.forEach(cell => {
-      cell.classList.remove('enemy')
-    })
-    enemyArray = enemyArray.map(enemy => {
-      const newPosition = enemy + 1
-      if (newPosition < totalNumberOfGridCells) {
-        cells[newPosition].classList.add('enemy')
-        return newPosition
-      } else {
-        boardNuke()
-        setTimeout(() => {
+  let timer = 0
+  let timerTwo = 0
+  if (gamePlaying){
+    timer = setInterval(() =>{
+      cells.forEach(cell => {
+        cell.classList.remove('enemy')
+      })
+      enemyArray = enemyArray.map(enemy => {
+        const newPosition = enemy + 1
+        if (gamePlaying && newPosition < totalNumberOfGridCells) {
+          cells[newPosition].classList.add('enemy')
+          return newPosition
+        } else {
+          clearInterval(timerTwo)
           boardNuke()
-          location.reload()
-        }, 2000)
+          setTimeout(() => {
+            boardNuke()
+            location.reload()
+          }, 2000)
         
-      }
-    })
-  }, 2000)
-  
+        }
+      })
+    }, 2000)
+  } else {
+    clearInterval(timer)
+    clearInterval(timerTwo)
+  }
 }
 
 function moveEnemiesDown(){
@@ -199,16 +206,7 @@ function fireWeapon(event) {
   }
 
   if (event.keyCode === 69) {
-    const timer = setInterval(() => {
-      
-      cells[playerPosition].classList.remove('player')
-      cells[playerPosition].classList.add('weaponFrameOne')
-      setTimeout(() => {
-        cells[playerPosition].classList.remove('weaponFrameOne')
-      }, 100)
-      cells[playerPosition].classList.add('player')
-
-      
+    const timer = setInterval(() => {     
       const y = Math.floor(playerPosition / gridWidth)
       
       console.log(y)
@@ -218,7 +216,7 @@ function fireWeapon(event) {
         cells[weaponPosition].classList.add('gibs')
         setTimeout(() => {
           cells[weaponPosition].classList.remove('gibs')
-        }, 50)
+        }, 200)
         const index = enemyArray.indexOf(weaponPosition)
         deadEnemies.push(index)
         totalEnemies--
@@ -250,24 +248,39 @@ function fireWeapon(event) {
 }
 
 function enemyFire() {
-  setInterval(() => {
-    let randomNumber = Math.floor((Math.random() * totalNumberOfGridCells))
+  if (gamePlaying === true){
+    const timerOne = setInterval(() => {
+      let randomNumber = Math.floor((Math.random() * totalNumberOfGridCells))
+      const y = Math.ceil(totalNumberOfGridCells - 1)
+      if (cells[randomNumber].classList.contains('enemy') && !cells[randomNumber + gridWidth].classList.contains('enemy')){
 
-    if (cells[randomNumber].classList.contains('enemy') && !cells[randomNumber + gridWidth].classList.contains('enemy') ){
-      console.log('fire')
-      const y = Math.ceil(totalNumberOfGridCells)
-      setInterval(() => {
-
-        if (randomNumber >= y - 1){
-          cells[randomNumber].classList.remove('enemyBomb')
-          randomNumber += gridWidth
-          cells[randomNumber].classList.add('enemyBomb')
-        }
-      }, 1100)
-    } else {
-      return
-    }
-  }, 300)
+        console.log('fire')
+      
+        const timerTwo = setInterval(() =>{
+          if (randomNumber >= y - gridWidth){
+            cells[randomNumber].classList.remove('enemyBomb')
+            clearInterval(timerTwo)
+          } else if (randomNumber <= y) {
+            cells[randomNumber].classList.remove('enemyBomb')
+            randomNumber += gridWidth
+            if (randomNumber !== playerPosition){
+              console.log(cells[randomNumber])
+              cells[randomNumber].classList.add('enemyBomb')}
+            else {
+              boardNuke()
+              clearInterval(timerOne)
+              clearInterval(timerTwo)
+              setTimeout
+            } 
+          }
+        },  200 )
+      } else {
+        return
+      }
+    }, 50)
+  } else {
+    return
+  }
 }
 
 
