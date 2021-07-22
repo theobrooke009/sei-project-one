@@ -1,21 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Doom Ephemeral</title>
   <script src ="./scripts/app.js" defer charset="utf-8"></script>
   <link rel="stylesheet" href= "./styles/main.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@800;900&display=swap" rel="stylesheet"> 
+
 </head>
 <body>
-  <div class="header">
-  <button class="start">start game</button>
+  
+
+  
+
+  <div class="column">
+    <div id="header">
+      <div id="title">
+        <img id = "logo" src="../sei-project-one/assets/rsz_7301.png" alt="Doom Logo">
+
+        <p>D E M A S T E R E D</p>
+      </div>
+
+
+    </div>
+    <div id="menus">
+      <div class="button">
+        <button class="start" type="reset" ><span id="button-text">START GAME</span></button>
+      </div>
+
+    <div id="scores">
+      <p id='scoreboard'>TOTAL SCORE </p>
+      <p id="score"></p>
+    </div>
   </div>
+
   <div class="wrapper">
     <div class="grid"></div>
-    <div id="door"></div>
   </div>
+</div>
+
+
+
+
   <audio id="enemyHit" controls style="display:none">
     <source src="../sei-project-one/assets/enemyhit.mp3" type="audio/mp3">
   </audio>
@@ -29,7 +61,7 @@
     <source src="../sei-project-one/assets/dspldeth.wav" type="audio/wav">
   </audio>
   <audio id="eOneMOne" controls style="display:none">
-    <source src="../sei-project-one/assets/doo" type="audio/wav">
+    <source src="../sei-project-one/assets/Doom OST - E1M1 - At Doom's Gate.mp3" type="audio/wav">
   </audio>
 </body>
 </html>

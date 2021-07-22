@@ -4,44 +4,76 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap');
 
 body {
-  height: 100vh;
+  font-family:'Orbitron', sans-serif ;
+  color: maroon;
+  background-image: url('../assets/borderimage.png');
+  
+  background-size: cover;
   margin: 0;
-  color: black;
   display: flex;;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
+.column {
+  background-color: black;
+  margin: 20px 80px;
+  padding: 0 50px 50px 50px;
+}
+
+
+
+#title {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+#menus {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 35px;
+}
+
+.button {
+  margin-right: 50px;
+}
+
 .header {
+  font-family:'Orbitron', sans-serif ;
+  display: flex;
   height: 65px;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
 }
 
+#logo {
+  margin-top: 40px;
+  display: block;
+  max-width:230px;
+  max-height:95px;
+  width: auto;
+  height: auto;
+}
 
 .wrapper {
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* #door {
-  height: 600px;
-  width: 600px;
-  z-index: 2;
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-image: url('../assets/DOOM\ DOOR.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-} */
+#score {
+  text-align: center;
+}
+
 .grid {
-  z-index: 1;
+  border-right: 20px solid transparent;
+  border-left: 20px solid transparent;
+  border-image-source: url('../assets/border.png');
+  border-image-slice: 5;
+  border-image-repeat: repeat;
+  border-image-width:0 20px 0 20px;
   align-items: center;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
   display: flex;
@@ -50,10 +82,13 @@ body {
   justify-content: center;
   height: 600px;
   width: 600px;
-  position: absolute;
   background-image: url('../assets/betterbackground.png');
 
 }
+#scoreboard {
+  margin: 0 0;
+}
+
 
 .grid div {
   flex-grow: 1;
@@ -120,4 +155,22 @@ body {
   background-image: url('../assets/ludicrous\ gibs.png');
   background-repeat: no-repeat;
   background-size: contain;
+}
+
+.start {
+ padding: 10px 20px;
+  box-sizing: border-box;
+  text-decoration:none;
+  font-family:'Orbitron', sans-serif ;
+  font-weight:300;
+  color:maroon;
+  text-align:center;
+  background-color: black;
+  transition: all 0.2s;
+}
+
+#button{
+  display:flex;
+  justify-content: center;
+  align-items: center;
 }
