@@ -1,11 +1,23 @@
 * {
   box-sizing: border-box;
 }
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap');
 
 body {
   height: 100vh;
   margin: 0;
   color: black;
+  display: flex;;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.header {
+  height: 65px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 
@@ -16,7 +28,20 @@ body {
   align-items: center;
 }
 
+/* #door {
+  height: 600px;
+  width: 600px;
+  z-index: 2;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url('../assets/DOOM\ DOOR.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+} */
 .grid {
+  z-index: 1;
   align-items: center;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
   display: flex;
@@ -25,21 +50,23 @@ body {
   justify-content: center;
   height: 600px;
   width: 600px;
+  position: absolute;
+  background-image: url('../assets/betterbackground.png');
+
 }
 
 .grid div {
-  border: 1px solid lightgrey;
   flex-grow: 1;
   height: 7.5%;
   width: 7.5%;
 
- 
 }
 
 .player{
-  background-image: url('../assets/shotgun.png');
+  background-image: url('../assets/actualshotgun.png');
   background-repeat: no-repeat;
   background-size: contain;
+  z-index: 2;
 }
 
 .leadEnemy {
@@ -47,7 +74,7 @@ body {
 }
 
 .weapon {
-  background-color: black;
+  /* background-color: black; */
 }
 
 .enemy {
@@ -56,12 +83,20 @@ body {
   background-size: contain;
 }
 
+.enemyAttack {
+  background-image: url('../assets/attackframe.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
 .enemyBomb {
-  background-color: crimson;
+  background-image: url('../assets/FIREBALL.png');
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 .weaponFrameOne{
-  background-image: url('../assets/sgframetwo.png');
+  background-image: url('../assets/shotgunOne.png');
   background-repeat: no-repeat;
   background-size: contain;
 }
@@ -71,15 +106,18 @@ body {
 }
 
 .weaponFrameTwo{
-  background-color: cyan;
+  background-image: url('../assets/shotguntwo.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.weaponFrameThree {
+  background-image: url('../assets/shotgunthree.png');
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 .gibs {
   background-image: url('../assets/ludicrous\ gibs.png');
   background-repeat: no-repeat;
   background-size: contain;
-}
-
-.rocketLauncher {
-  background-color: yellow;
 }

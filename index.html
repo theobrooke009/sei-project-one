@@ -9,10 +9,27 @@
   <link rel="stylesheet" href= "./styles/main.css">
 </head>
 <body>
+  <div class="header">
   <button class="start">start game</button>
+  </div>
   <div class="wrapper">
     <div class="grid"></div>
+    <div id="door"></div>
   </div>
-  
+  <audio id="enemyHit" controls style="display:none">
+    <source src="../sei-project-one/assets/enemyhit.mp3" type="audio/mp3">
+  </audio>
+  <audio id="enemyAttack" controls style="display:none">
+    <source src="../sei-project-one/assets/enemyAttack.wav" type="audio/wav">
+  </audio>
+  <audio id="playerFire" controls style="display:none">
+    <source src="../sei-project-one/assets/dsshotgn.wav" type="audio/wav">
+  </audio>
+  <audio id="playerDeath" controls style="display:none">
+    <source src="../sei-project-one/assets/dspldeth.wav" type="audio/wav">
+  </audio>
+  <audio id="eOneMOne" controls style="display:none">
+    <source src="../sei-project-one/assets/doo" type="audio/wav">
+  </audio>
 </body>
 </html>
