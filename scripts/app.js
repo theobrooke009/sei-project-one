@@ -6,7 +6,6 @@ const start = document.querySelector('.start')
 const uVStart = document.querySelector('.uv-start')
 // Grab the HTML start button class in the dom
 
-const restart = document.querySelector('.restart')
 
 // Arrays
 const cells = []
@@ -134,6 +133,9 @@ function addEnemyClass() {
 }
 
 //this adds an enemy class to all enemies
+
+
+
 
 function moveEnemiesRight(){
   let timer = 0
