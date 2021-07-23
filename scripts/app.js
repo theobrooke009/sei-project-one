@@ -3,6 +3,7 @@ const grid = document.querySelector('.grid')
 // Grab the grid in the DOM
 
 const start = document.querySelector('.start')
+const uVStart = document.querySelector('.uv-start')
 // Grab the HTML start button class in the dom
 
 const restart = document.querySelector('.restart')
@@ -39,6 +40,8 @@ buildGrid()
 const playerClass = 'player'
 const weaponClass = 'weapon'
 let playerScore = 0
+let rightMovement = false
+let row = 1
 const music = document.getElementById('eOneMOne')
 // CSS classes stored as variables for ease of use
 
@@ -60,6 +63,7 @@ function removePlayer() {
   cells[playerPosition].classList.remove(playerClass)
 }
 // this removes the player from the player position
+
 
 // Player Functions
 
@@ -102,7 +106,10 @@ function boardNuke(){
 
   cells.forEach(cell => cell.classList.remove('enemyBomb'))
 
+  cells.forEach(cell => cell.classList.remove('enemyAttack'))
+
   music.pause()
+
   music.currentTime = 0 
 
   document.getElementById('menus').style.display = 'none'
@@ -115,6 +122,8 @@ function boardNuke(){
     location.reload()
   }, 5000)
 
+  row = 1
+
 }
 
 function addEnemyClass() {
@@ -126,14 +135,6 @@ function addEnemyClass() {
 
 //this adds an enemy class to all enemies
 
-function removeEnemyClass() {
-  enemyArray.forEach(enemy => {
-    cells[enemy].classList.remove('enemy')
-    
-  })
-}
-
-
 function moveEnemiesRight(){
   let timer = 0
   let timerTwo = 0
@@ -144,7 +145,7 @@ function moveEnemiesRight(){
       })
       enemyArray = enemyArray.map(enemy => {
         const newPosition = enemy + 1
-        if (gamePlaying && newPosition < totalNumberOfGridCells && newPosition !== playerPosition) {
+        if (gamePlaying && newPosition < totalNumberOfGridCells - (gridWidth - 1) && newPosition !== playerPosition) {
           cells[newPosition].classList.add('enemy')
           return newPosition
         } else {
@@ -153,7 +154,7 @@ function moveEnemiesRight(){
         
         }
       })
-    }, 700)
+    }, 400)
   } else {
     clearInterval(timer)
     clearInterval(timerTwo)
@@ -162,16 +163,16 @@ function moveEnemiesRight(){
 
 function moveEnemiesDown(){
   
-  setInterval(() =>{
-    cells.forEach(cell => {
-      cell.classList.remove('enemy')
-    })
-    enemyArray = enemyArray.map(enemy => {
-      const newPosition = enemy + gridWidth
-      cells[newPosition].classList.add('enemy')
-      return newPosition
-    })
-  }, 500)
+
+  cells.forEach(cell => {
+    cell.classList.remove('enemy')
+  })
+  enemyArray = enemyArray.map(enemy => {
+    const newPosition = enemy + gridWidth
+    cells[newPosition].classList.add('enemy')
+    return newPosition
+  })
+
 }
 
 function moveEnemiesleft() {
@@ -180,17 +181,33 @@ function moveEnemiesleft() {
       cell.classList.remove('enemy')
     })
     enemyArray = enemyArray.map(enemy => {
-      const newPosition = enemy + 1
+      const newPosition = enemy - 1
       cells[newPosition].classList.add('enemy')
       return newPosition
     })
-  }, 500)
+  }, 400)
 }
 
 function movingEnemies() {
-  addEnemyClass() 
-  moveEnemiesRight()
- 
+  const rightBoundary = enemyArray[enemyArray.length - 1] % gridWidth
+  const leftBoundary = enemyArray[0] % gridWidth
+
+  addEnemyClass()
+
+  if (rightBoundary === gridWidth * row && rightMovement === true){
+    row++
+    rightMovement = false
+    moveEnemiesleft()
+
+  } else if (leftBoundary === (row * gridWidth) - gridWidth && rightMovement === false){
+    row++
+    console.log(row)
+    rightMovement = true
+    moveEnemiesRight()
+  } else {
+    moveEnemiesDown()
+  }
+
 }
 
 function resetBugs(){
@@ -198,6 +215,7 @@ function resetBugs(){
   cells.forEach(cell => cell.classList.remove('weaponFrameTwo'))
   cells.forEach(cell => cell.classList.remove('weaponFrameThree'))
   cells.forEach(cell => cell.classList.remove('gibs'))
+  cells.forEach(cell => cell.classList.remove('enemyAttack'))
 }
 
 function fireWeapon(event) {
@@ -223,6 +241,7 @@ function fireWeapon(event) {
     setTimeout(() => {
       cells[playerPosition].classList.add('weaponFrameTwo')
     }, 100)
+    
     setTimeout(() => {
       cells[playerPosition].classList.remove('weaponFrameTwo')
     }, 100)
@@ -241,9 +260,6 @@ function fireWeapon(event) {
     const timer = setInterval(() => {     
       const y = Math.floor(playerPosition / gridWidth)
       
-
-    
-      console.log(y)
       if (cells[weaponPosition].classList.contains('enemy')){
         playerScore += 1000
         document.getElementById('score').innerHTML = playerScore
@@ -284,7 +300,7 @@ function enemyFire() {
   if (gamePlaying === true){
     const timerOne = setInterval(() => {
       let randomNumber = Math.floor((Math.random() * totalNumberOfGridCells))
-      const y = Math.ceil(totalNumberOfGridCells - 1)
+      const y = Math.ceil(totalNumberOfGridCells)
       if (cells[randomNumber].classList.contains('enemy') && !cells[randomNumber + gridWidth].classList.contains('enemy')){
         cells[randomNumber].classList.remove('enemy')
         cells[randomNumber].classList.add('enemyAttack')
@@ -294,7 +310,6 @@ function enemyFire() {
         }, 200);
         cells[randomNumber].classList.add('enemy')
         document.getElementById('enemyAttack').play()
-        console.log('fire')
       
         const timerTwo = setInterval(() =>{
           if (randomNumber >= y - gridWidth){
@@ -304,7 +319,6 @@ function enemyFire() {
             cells[randomNumber].classList.remove('enemyBomb')
             randomNumber += gridWidth
             if (randomNumber !== playerPosition){
-              console.log(cells[randomNumber])
               cells[randomNumber].classList.add('enemyBomb')
             } else if (
               cells[randomNumber].classList.contains(weaponClass) && cells[randomNumber].classList.contains('enemyBomb')
@@ -319,7 +333,54 @@ function enemyFire() {
               setTimeout
             } 
           }
-        },  200 )
+        },  400 )
+      } else {
+        return
+      }
+    }, 30)
+  } else {
+    return
+  }
+}
+
+function uVEnemyFire() {
+  if (gamePlaying === true){
+    const timerOne = setInterval(() => {
+      let randomNumber = Math.floor((Math.random() * totalNumberOfGridCells))
+      const y = Math.ceil(totalNumberOfGridCells)
+      if (cells[randomNumber].classList.contains('enemy') && !cells[randomNumber + gridWidth].classList.contains('enemy')){
+        cells[randomNumber].classList.remove('enemy')
+        cells[randomNumber].classList.add('enemyAttack')
+        setTimeout(() => {
+          cells[randomNumber].classList.remove('enemyAttack')
+          cells[randomNumber].classList.add('enemy')
+        }, 200);
+        cells[randomNumber].classList.add('enemy')
+        document.getElementById('enemyAttack').play()
+      
+        const timerTwo = setInterval(() =>{
+          if (randomNumber >= y - gridWidth){
+            cells[randomNumber].classList.remove('enemyBomb')
+            clearInterval(timerTwo)
+          } else if (randomNumber <= y) {
+            cells[randomNumber].classList.remove('enemyBomb')
+            randomNumber += gridWidth
+            if (randomNumber !== playerPosition){
+              cells[randomNumber].classList.add('enemyBomb')
+            } else if (
+              cells[randomNumber].classList.contains(weaponClass) && cells[randomNumber].classList.contains('enemyBomb')
+            ){
+              cells[randomNumber].classList.remove('enemyBomb')
+              cells[randomNumber].classList.remove(weaponClass)
+            } else {
+              document.getElementById('playerDeath').play()
+              boardNuke()
+              clearInterval(timerOne)
+              clearInterval(timerTwo)
+              setTimeout
+            } 
+          }
+        },  150)
       } else {
         return
       }
@@ -328,6 +389,7 @@ function enemyFire() {
     return
   }
 }
+
 
 
 // Event Listeners
@@ -339,3 +401,8 @@ start.addEventListener('click', enemyFire)
 start.addEventListener('click', movingEnemies)
 start.addEventListener('click', placePlayer)
 start.addEventListener('click', playMusic)
+
+uVStart.addEventListener('click', uVEnemyFire)
+uVStart.addEventListener('click', movingEnemies)
+uVStart.addEventListener('click', placePlayer)
+uVStart.addEventListener('click', playMusic)
