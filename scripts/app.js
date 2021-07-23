@@ -2,11 +2,10 @@
 const grid = document.querySelector('.grid')
 // Grab the grid in the DOM
 
-const enemies = document.querySelectorAll('.enemy')
-// Grab the enemy class in the DOM
-
 const start = document.querySelector('.start')
 // Grab the HTML start button class in the dom
+
+const restart = document.querySelector('.restart')
 
 // Arrays
 const cells = []
@@ -39,8 +38,8 @@ buildGrid()
 
 const playerClass = 'player'
 const weaponClass = 'weapon'
-const enemyBomb = 'enemyBomb'
 let playerScore = 0
+const music = document.getElementById('eOneMOne')
 // CSS classes stored as variables for ease of use
 
 let playerPosition = parseFloat(Math.floor(totalNumberOfGridCells - ( gridWidth / 2)))
@@ -48,8 +47,7 @@ let playerPosition = parseFloat(Math.floor(totalNumberOfGridCells - ( gridWidth 
 // Functions
 
 function playMusic(){
-  const music = document.getElementById('eOneMOne').play() 
-  music.volume = 10.0 
+  music.play() 
 }
 
 function placePlayer() {
@@ -104,17 +102,25 @@ function boardNuke(){
 
   cells.forEach(cell => cell.classList.remove('enemyBomb'))
 
-  document.getElementById('scoreboard').innerHTML = 'FINAL SCORE'
-  console.log(playerScore)
-  document.getElementById('score').innerHTML = 1 * (playerScore) 
+  music.pause()
+  music.currentTime = 0 
+
+  document.getElementById('menus').style.display = 'none'
+
+  document.getElementById('end-menu').style.display = 'flex'
+  
+  document.getElementById('final-score').innerHTML = 1 * (playerScore) 
+
+  setTimeout(() => {
+    location.reload()
+  }, 5000)
 
 }
 
 function addEnemyClass() {
 
   enemyArray.forEach(enemy => {
-    cells[enemy].classList.add('enemy')
-    
+    cells[enemy].classList.add('enemy')   
   })
 }
 
@@ -144,10 +150,6 @@ function moveEnemiesRight(){
         } else {
           clearInterval(timerTwo)
           boardNuke()
-          setTimeout(() => {
-            boardNuke()
-            location.reload()
-          }, 2000)
         
         }
       })
@@ -257,10 +259,6 @@ function fireWeapon(event) {
         totalEnemies--
         if (totalEnemies === 0){
           boardNuke()
-          setTimeout(() => {
-            boardNuke()
-            location.reload()
-          }, 2000)
         }
         if (index > - 1){
           enemyArray.splice(index, 1)
@@ -335,8 +333,9 @@ function enemyFire() {
 // Event Listeners
 
 window.addEventListener('keyup', fireWeapon)
+window.addEventListener('keyup', movePlayer)
+
 start.addEventListener('click', enemyFire)
 start.addEventListener('click', movingEnemies)
 start.addEventListener('click', placePlayer)
-window.addEventListener('keyup', movePlayer)
 start.addEventListener('click', playMusic)
