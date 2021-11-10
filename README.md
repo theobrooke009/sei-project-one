@@ -1,4 +1,4 @@
-# General Assembly Project One - Space Invaders
+# General Assembly Project One - Doom Demastered
 
 ## Overview
 
