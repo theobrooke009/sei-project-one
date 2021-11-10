@@ -1,5 +1,7 @@
 # General Assembly Project One - Doom Demastered
 
+![](https://github.com/theobrooke009/sei-project-one/blob/main/readme-images/doom.png)
+
 ## Overview
 
 For this project, I recreated the 1978 classic game Space Invaders. I chose this because it seemed like a decent challenge and one that was just within reach of my skills at the time.
