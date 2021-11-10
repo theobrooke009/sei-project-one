@@ -2,7 +2,7 @@
 
 ## Overview
 
-For this project I chose to recreate the 1978 classic game Space Invaders. I chose this because it seemed like a decent challenge and one that was just within reach of my skills at the time.
+For this project, I recreated the 1978 classic game Space Invaders. I chose this because it seemed like a decent challenge and one that was just within reach of my skills at the time.
 
 The premise of Space Invaders is relatively simple - the player moves left and right and can fire upwards towards the aliens, who in turn move forwards and fire downwards at the player. My version pays homage to the iconic 90s FPS Doom, as it was making custom levels all the way back in the early 2000s then planted the seed for the career I’m pursuing today.
 
